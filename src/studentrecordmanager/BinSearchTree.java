@@ -1,6 +1,8 @@
 package studentrecordmanager;
 
 import java.io.*;
+import java.util.Scanner;
+
 import javax.swing.JOptionPane;
 /**
  * The following class called BinSearchTree creates an empty 
@@ -17,6 +19,30 @@ class BinSearchTree {
 	public BinSearchTree() {
 		root = null;
 	}
+	
+	/**
+	 * Creates a binary search tree from the specified filename
+	 * @param fileName name of the file to read from 
+	 */
+	public BinSearchTree(String fileName) {
+		Scanner fileInput = null;
+		try {
+			fileInput = new Scanner(new File(fileName));
+		} catch (FileNotFoundException e) {
+			System.err.println("The file could not be found");
+			e.printStackTrace();
+		}
+		
+		String input = "";
+		String [] data = new String [4];
+		while(fileInput.hasNextLine()) {
+			input = fileInput.nextLine();
+			data = input.split(" ");
+			insert(data[0], data[1], data[2], data[3]);
+		}
+		
+	}
+	
 	
 	/**
 	 * the following method, inserts a new node that contains several data
