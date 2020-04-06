@@ -1,3 +1,5 @@
+package studentrecordmanager;
+
 /**
  * Represents data within a node
  */
