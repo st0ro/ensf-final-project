@@ -37,7 +37,7 @@ class BinSearchTree {
 		String[] data = new String[4];
 		while (fileInput.hasNextLine()) {
 			input = fileInput.nextLine();
-			data = input.strip().split("\\s+");
+			data = input.trim().split("\\s+");
 			insert(data[0], data[1], data[2], data[3]);
 		}
 
