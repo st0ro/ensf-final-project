@@ -24,14 +24,9 @@ class BinSearchTree {
 	 * 
 	 * @param fileName name of the file to read from
 	 */
-	public BinSearchTree(String fileName) {
+	public BinSearchTree(String fileName) throws FileNotFoundException{
 		Scanner fileInput = null;
-		try {
-			fileInput = new Scanner(new File(fileName));
-		} catch (FileNotFoundException e) {
-			System.err.println("The file could not be found");
-			e.printStackTrace();
-		}
+		fileInput = new Scanner(new File(fileName));
 
 		String input = "";
 		String[] data = new String[4];
@@ -40,7 +35,7 @@ class BinSearchTree {
 			data = input.trim().split("\\s+");
 			insert(data[0], data[1], data[2], data[3]);
 		}
-
+		fileInput.close();
 	}
 
 	/**
@@ -171,10 +166,8 @@ class BinSearchTree {
 	public void print_tree(Node cur, PrintWriter out) throws IOException {
 		if (cur.left != null)
 			print_tree(cur.left, out);
-		String s = cur.data.id + "        " + cur.data.faculty + "     " + cur.data.major + "       " + cur.data.year
-				+ "\n";
+		String s = cur.data.id + "        " + cur.data.faculty + "     " + cur.data.major + "       " + cur.data.year;
 		out.println(s);
-		System.out.println(s);
 		if (cur.right != null)
 			print_tree(cur.right, out);
 	}
