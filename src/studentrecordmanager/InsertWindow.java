@@ -16,6 +16,11 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JTextField;
 
+/**
+ * A window for inserting a student to the list
+ * @author Tony F, Alex P, James Z
+ *
+ */
 public class InsertWindow extends JFrame{
 	
 	private static final long serialVersionUID = 2211164234179019854L;
@@ -26,7 +31,8 @@ public class InsertWindow extends JFrame{
 	private JTextField yearField;
 	
 	/**
-	 * @wbp.parser.entryPoint
+	 * Creates and displays the window for inserting a student
+	 * @param parent JFrame opening the insert window
 	 */
 	public InsertWindow(JFrame parent) {
 		super("Insert New Student");
@@ -82,6 +88,10 @@ public class InsertWindow extends JFrame{
 		setVisible(true);
 	}
 	
+	/**
+	 * Adds listeners to the input fields and buttons of the window
+	 * @param parent main function requesting the window
+	 */
 	public void addListeners(StudentRecordManager parent) {
 		insertBtn.addActionListener(new ActionListener() {
 			@Override

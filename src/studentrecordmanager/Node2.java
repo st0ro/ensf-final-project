@@ -5,7 +5,13 @@ package studentrecordmanager;
  */
 class Node {
 	
+	/**
+	 * Contains the information held in the node
+	 */
 	Data data;
+	/**
+	 * References to the left and right branches of the tree
+	 */
 	Node left, right;
 	/**
 	 * 
@@ -20,7 +26,8 @@ class Node {
 		left = null;
         right = null;
 	}
-	
+
+	@Override
 	public String toString() {
 		return data.toString();
 	}

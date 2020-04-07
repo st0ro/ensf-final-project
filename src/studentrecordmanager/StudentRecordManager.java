@@ -19,6 +19,12 @@ import javax.swing.SwingConstants;
 import javax.swing.JTextPane;
 import java.awt.Font;
 
+/**
+ * Contains the GUI for reading students from a text file, adding more students,
+ * and searching for students. 
+ * @author Tony F, Alex P, James Z
+ *
+ */
 public class StudentRecordManager extends JFrame {
 	
 	private static final long serialVersionUID = 7650288238822644857L;
@@ -30,6 +36,9 @@ public class StudentRecordManager extends JFrame {
 	private BinSearchTree tree;
 	private JTextPane mainTextPane;
 
+	/**
+	 * Creates a student record manager gui
+	 */
 	public StudentRecordManager() {
 		super("Student Record Manager");
 		tree = null;
@@ -67,6 +76,9 @@ public class StudentRecordManager extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 	
+	/**
+	 * Adds listeners to each of the buttons and input fields
+	 */
 	public void addListeners() {
 		insertBtn.addActionListener(new ActionListener() {
 			@Override
@@ -123,11 +135,21 @@ public class StudentRecordManager extends JFrame {
 		});
 	}
 	
+	/**
+	 * Adds a student to the tree and updates the list
+	 * @param id id number
+	 * @param faculty student's faculty
+	 * @param major student's major 
+	 * @param year student's year
+	 */
 	public void insertInput(String id, String faculty, String major, String year) {
 		tree.insert(id, faculty, major, year);
 		refreshList();
 	}
 	
+	/**
+	 * Updates the list of students in the gui
+	 */
 	public void refreshList() {
 		ByteArrayOutputStream byteOut = new ByteArrayOutputStream();
 		PrintWriter writer = new PrintWriter(byteOut);
