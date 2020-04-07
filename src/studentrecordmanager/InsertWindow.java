@@ -16,9 +16,9 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JTextField;
 
-public class InsertWindow {
+public class InsertWindow extends JFrame{
 	
-	private JFrame frame;
+	private static final long serialVersionUID = 2211164234179019854L;
 	private JButton insertBtn, returnBtn;
 	private JTextField idField;
 	private JTextField facultyField;
@@ -29,10 +29,10 @@ public class InsertWindow {
 	 * @wbp.parser.entryPoint
 	 */
 	public InsertWindow(JFrame parent) {
-		frame = new JFrame("Insert New Student");
-		frame.setSize(450, 150);
-		frame.setLocationRelativeTo(parent);
-		Container mainPane = frame.getContentPane();
+		super("Insert New Student");
+		setSize(450, 150);
+		setLocationRelativeTo(parent);
+		Container mainPane = getContentPane();
 		
 		JLabel headLabel = new JLabel("Insert a new student to the tree");
 		headLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -79,7 +79,7 @@ public class InsertWindow {
 		returnBtn = new JButton("Return to main window");
 		btnPanel.add(returnBtn);
 		
-		frame.setVisible(true);
+		setVisible(true);
 	}
 	
 	public void addListeners(StudentRecordManager parent) {
@@ -92,14 +92,14 @@ public class InsertWindow {
 				}
 				else {
 					parent.insertInput(idField.getText(), facultyField.getText(), majorField.getText(), yearField.getText());
-					frame.setVisible(false);
+					setVisible(false);
 				}
 			}
 		});
 		returnBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				frame.setVisible(false);
+				setVisible(false);
 			}
 		});
 	}

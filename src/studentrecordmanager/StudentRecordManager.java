@@ -19,9 +19,9 @@ import javax.swing.SwingConstants;
 import javax.swing.JTextPane;
 import java.awt.Font;
 
-public class StudentRecordManager {
+public class StudentRecordManager extends JFrame {
 	
-	private JFrame frame;
+	private static final long serialVersionUID = 7650288238822644857L;
 	private JPanel mainPanel, footPanel;
 	private JScrollPane listPanel;
 	private JLabel headLabel;
@@ -31,6 +31,7 @@ public class StudentRecordManager {
 	private JTextPane mainTextPane;
 
 	public StudentRecordManager() {
+		super("Student Record Manager");
 		tree = null;
 		
 		headLabel = new JLabel("Student Record Manager Application");
@@ -59,12 +60,11 @@ public class StudentRecordManager {
 		listPanel.setViewportView(mainTextPane);
 		mainPanel.add(footPanel, BorderLayout.PAGE_END);
 		
-		frame = new JFrame("Student Record Manager");
-		frame.setContentPane(mainPanel);
-		frame.setSize(500, 350);
-		frame.setLocationRelativeTo(null);
-		frame.setVisible(true);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setContentPane(mainPanel);
+		setSize(500, 350);
+		setLocationRelativeTo(null);
+		setVisible(true);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 	
 	public void addListeners() {
@@ -74,7 +74,7 @@ public class StudentRecordManager {
 				if(tree == null) {
 					tree = new BinSearchTree();
 				}
-				InsertWindow insertWindow= new InsertWindow(frame);
+				InsertWindow insertWindow= new InsertWindow(StudentRecordManager.this);
 				insertWindow.addListeners(StudentRecordManager.this);
 			}
 		});
