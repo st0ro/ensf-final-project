@@ -36,5 +36,13 @@ public class DBManager {
 		studentList.add(new Student("Karen", 8, "Bob"));
 		return courseList;
 	}
+	
+	public Student searchStudent(int id) {
+		for (Student s: studentList) {
+			if (s.getStudentId() == id)
+				return s;
+		}
+		return null;
+	}
 
 }
