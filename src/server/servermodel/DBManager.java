@@ -7,9 +7,11 @@ import java.util.ArrayList;
 public class DBManager {
 	
 	ArrayList <Course> courseList;
+	ArrayList <Student> studentList;
 
 	public DBManager () {
 		courseList = new ArrayList<Course>();
+		studentList = new ArrayList<Student>();
 	}
 
 	public ArrayList readFromDataBase() {
@@ -24,6 +26,14 @@ public class DBManager {
 		courseList.get(2).addPreReq(courseList.get(3));
 		courseList.get(2).addPreReq(courseList.get(4));
 		courseList.get(5).addPreReq(courseList.get(4));
+		studentList.add(new Student("Timmy", 1));
+		studentList.add(new Student("Jimmy", 2));
+		studentList.add(new Student("Joseph", 3));
+		studentList.add(new Student("John", 4));
+		studentList.add(new Student("Bill", 5));
+		studentList.add(new Student("Sam", 6));
+		studentList.add(new Student("Bob", 7));
+		studentList.add(new Student("Karen", 8));
 		return courseList;
 	}
 
