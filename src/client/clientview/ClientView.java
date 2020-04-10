@@ -113,7 +113,7 @@ public class ClientView extends JFrame{
 					if(confirm == 0) {
 						String result = controller.attemptEnroll(name, section);
 						if(result.isEmpty()) {
-							// TODO reload tables
+							controller.retrieveCourses(0);
 						} else {
 							JOptionPane.showMessageDialog(ClientView.this, result, "Enroll", JOptionPane.ERROR_MESSAGE);
 						}
@@ -134,7 +134,7 @@ public class ClientView extends JFrame{
 					if(confirm == 0) {
 						String result = controller.attemptUnenroll(name, section);
 						if(result.isEmpty()) {
-							// TODO reload tables
+							controller.retrieveCourses(1);
 						} else {
 							JOptionPane.showMessageDialog(ClientView.this, result, "Remove Course", JOptionPane.ERROR_MESSAGE);
 						}
@@ -146,9 +146,15 @@ public class ClientView extends JFrame{
 		});
 	}
 	
-	public void fillTables(String[][] all, String[][] enrolled) {
-		allTable.setModel(makeTable(all));
-		enrolledTable.setModel(makeTable(enrolled));
+	public void fillTable(String[][] list, int set) {
+		switch(set) {
+		case 0:
+			allTable.setModel(makeTable(list));
+			break;
+		case 1:
+			enrolledTable.setModel(makeTable(list));
+			break;
+		}
 		tabbedPane.repaint();
 	}
 	

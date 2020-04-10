@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.ArrayList;
+
 import client.clientview.ClientView;
 import client.clientview.LogInView;
 
@@ -37,7 +39,7 @@ public class ClientController {
 	}
 	
 	public boolean attemptLogIn(String user, String password) {
-		/*try {
+		try {
 			socketOut.println(user);
 			socketOut.println(password);
 			int result = Integer.parseInt(socketIn.readLine());
@@ -45,6 +47,8 @@ public class ClientController {
 			case 0:
 				return false;
 			case 1:
+				retrieveCourses(0);
+				retrieveCourses(1);
 				return true;
 			case 2:
 				clientView.setAdmin();
@@ -53,7 +57,7 @@ public class ClientController {
 		} catch (IOException e) {
 			System.out.println("Communication error! Exiting...");
 			System.exit(1);
-		}*/
+		}
 		return true;
 	}
 	
@@ -85,6 +89,39 @@ public class ClientController {
 		}
 		return "";
 		
+	}
+	
+	public void retrieveCourses(int type) { //0 = all, 1 = enrolled
+		switch(type) {
+		case 0:
+			socketOut.println("get catalog");
+			break;
+		case 1:
+			socketOut.println("get enrolled");
+			break;
+		}
+		ArrayList<String[]> list = new ArrayList<String[]>();
+		try {
+			int classes = Integer.parseInt(socketIn.readLine());
+			for(int i = 0; i < classes; ++i) {
+				String name = socketIn.readLine();
+				int sections = Integer.parseInt(socketIn.readLine());
+				for(int j = 1; j <= sections; ++j) {
+					if(j == 1) {
+						String[] line = {name, j + "", socketIn.readLine()};
+						list.add(line);
+					} else {
+						String[] line = {"", j + "", socketIn.readLine()};
+						list.add(line);
+					}
+				}
+			}
+		} catch(IOException e) {
+			System.out.println("Communication error! Exiting...");
+			System.exit(1);
+		}
+		list.trimToSize();
+		clientView.fillTable((String[][])list.toArray(), type);
 	}
 	
 	public static void main (String args[]) {
