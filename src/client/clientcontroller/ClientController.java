@@ -56,6 +56,37 @@ public class ClientController {
 		}*/
 		return true;
 	}
+	
+	public String attemptEnroll(String name, int section) {
+		try {
+			socketOut.println("enroll "+ name + " " + section);
+			String result = socketIn.readLine();
+			if(result.equals("fail")) {
+				return socketIn.readLine();
+			}
+		} catch (IOException e) {
+			System.out.println("Communication error! Exiting...");
+			System.exit(1);
+		}
+		return "";
+		
+	}
+	
+	public String attemptUnenroll(String name, int section) {
+		try {
+			socketOut.println("unenroll "+ name + " " + section);
+			String result = socketIn.readLine();
+			if(result.equals("fail")) {
+				return socketIn.readLine();
+			}
+		} catch (IOException e) {
+			System.out.println("Communication error! Exiting...");
+			System.exit(1);
+		}
+		return "";
+		
+	}
+	
 	public static void main (String args[]) {
 		ClientController controller = new ClientController(new ClientView(), new LogInView());
 		controller.connect();

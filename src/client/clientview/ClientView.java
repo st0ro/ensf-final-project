@@ -105,10 +105,42 @@ public class ClientView extends JFrame{
 		allEnrollBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if(allTable.getSelectedRow() >= 0) {
-					
+				int row = allTable.getSelectedRow();
+				if(row >= 0) {
+					int section = Integer.parseInt((String) allTable.getValueAt(row, 1));
+					String name = (String) allTable.getValueAt(row - section + 1, 0);
+					int confirm = JOptionPane.showConfirmDialog(ClientView.this, "Do you wish to enroll in " + name + "?", "Enroll", JOptionPane.OK_CANCEL_OPTION);
+					if(confirm == 0) {
+						String result = controller.attemptEnroll(name, section);
+						if(result.isEmpty()) {
+							// TODO reload tables
+						} else {
+							JOptionPane.showMessageDialog(ClientView.this, result, "Enroll", JOptionPane.ERROR_MESSAGE);
+						}
+					}
 				} else {
 					JOptionPane.showMessageDialog(ClientView.this, "Please select a class to enroll.", "Enroll", JOptionPane.ERROR_MESSAGE);
+				}
+			}
+		});
+		enrolledRemoveBtn.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				int row = enrolledTable.getSelectedRow();
+				if(row >= 0) {
+					int section = Integer.parseInt((String) enrolledTable.getValueAt(row, 1));
+					String name = (String) enrolledTable.getValueAt(row, 0);
+					int confirm = JOptionPane.showConfirmDialog(ClientView.this, "Do you wish to remove " + name + "?", "Remove Course", JOptionPane.OK_CANCEL_OPTION);
+					if(confirm == 0) {
+						String result = controller.attemptUnenroll(name, section);
+						if(result.isEmpty()) {
+							// TODO reload tables
+						} else {
+							JOptionPane.showMessageDialog(ClientView.this, result, "Remove Course", JOptionPane.ERROR_MESSAGE);
+						}
+					}
+				} else {
+					JOptionPane.showMessageDialog(ClientView.this, "Please select a class to remove.", "Remove Course", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 		});
