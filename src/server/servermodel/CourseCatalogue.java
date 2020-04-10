@@ -28,16 +28,9 @@ public class CourseCatalogue {
 				return c;
 			}	
 		}
-		displayCourseNotFoundError();
 		return null;
 	}
-	//Typically, methods that are called from other methods of the class
-	//are private and are not exposed for use by other classes.
-	//These methods are refereed to as helper methods or utility methods
-	private void displayCourseNotFoundError() {
-		System.err.println("Course was not found!");
-		
-	}
+	
 	public ArrayList <Course> getCourseList() {
 		return courseList;
 	}

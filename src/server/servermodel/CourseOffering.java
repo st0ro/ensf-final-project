@@ -6,9 +6,7 @@ public class CourseOffering {
 	
 	private int secNum;
 	private int secCap;
-	//private int currentCap;
 	private Course theCourse;
-	//private ArrayList<Student> studentList;
 	private ArrayList <Registration> offeringRegList;
 	
 	public CourseOffering (int secNum, int secCap) {

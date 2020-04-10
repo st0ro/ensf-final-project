@@ -5,7 +5,7 @@ public class Registration {
 	private CourseOffering theOffering;
 	private char grade;
 	
-	void startRegistration (Student st, Course c) {
+	public void startRegistration (Student st, Course c) {
 		for (int i = 0; i < c.getOfferingList().size(); i++) {
 			if (c.getCourseOfferingAt(i).getOfferingRegList().size() < c.getCourseOfferingAt(i).getSecCap()) {
 				completeRegistration(st, c.getCourseOfferingAt(i));
@@ -16,7 +16,7 @@ public class Registration {
 		System.out.println("All course offerings are full. Unable to register for this course.");
 	}
 	
-	void completeRegistration (Student st, CourseOffering of) {
+	public void completeRegistration (Student st, CourseOffering of) {
 		theStudent = st;
 		theOffering = of;
 		addRegistration ();
