@@ -6,11 +6,13 @@ public class Student {
 	
 	private String studentName;
 	private int studentId;
+	private String password;
 	private ArrayList<Registration> studentRegList;
 	
-	public Student (String studentName, int studentId) {
+	public Student (String studentName, int studentId, String password) {
 		this.setStudentName(studentName);
 		this.setStudentId(studentId);
+		this.password = password;
 		studentRegList = new ArrayList<Registration>();
 	}
 
