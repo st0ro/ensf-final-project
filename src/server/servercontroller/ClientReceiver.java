@@ -16,7 +16,6 @@ public class ClientReceiver implements Runnable {
 
 	private BufferedReader socketIn;
 	private PrintWriter socketOut;
-	private String line;
 	private String[] arr;
 	private CourseCatalogue catalogue;
 	private Student theStudent;
@@ -34,25 +33,28 @@ public class ClientReceiver implements Runnable {
 
 	@Override
 	public void run() {
+		String line = "";
+		String[] args;
 		while (true) {
 			try {
-				line = socketIn.readLine();
+				args = socketIn.readLine().split(" ");
 			} catch (IOException e) {
-				continue;
+				// AFAIK will only throw IOException on unrecoverable errors, terminate if somehow occurs (should be properly closed by client)
+				// Could happen if server/client loses internet connection?
+				System.out.println("Error communicating with client!. Terminating thread...");
+				break;
 			}
-			arr = line.split(" ");
-			switch (arr[0]) {
-
-			case "catalog":
-				socketOut.write(catalogue.toString());
-				break;
-			
-			case "enrolled":
-				socketOut.write(theStudent.toString());
-				break;
-
-			case "enroll":
-				Course found2 = catalogue.searchCat(arr[1], Integer.parseInt(arr[2]));
+			switch (args[0]) {
+			case "get":
+				
+			case "add": // TODO change once admin is implemented
+				try {
+					line = socketIn.readLine();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				arr = line.split(" ");
+				Course found2 = catalogue.searchCat(arr[0], Integer.parseInt(arr[1]));
 				if (found2 == null)
 					socketOut.write("Enrollment failed\nCourse not found");
 				else {

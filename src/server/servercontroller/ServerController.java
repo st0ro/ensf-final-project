@@ -35,6 +35,7 @@ public class ServerController {
 	}
 
 	public Student login(Socket socket) {
+<<<<<<< HEAD
 		while (true) {
 			try {
 				socketIn = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -53,6 +54,16 @@ public class ServerController {
 				e.printStackTrace();
 			}
 			return null;
+=======
+		try {
+			socketIn = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+			socketOut = new PrintWriter(socket.getOutputStream(), true);
+			String input = socketIn.readLine();
+			String[] arr = input.split(" ");
+			//Student s = database.search(); // Don't commit non-functional code
+		} catch (IOException e) {
+			e.printStackTrace();
+>>>>>>> d1fbf7391ebf73c8c5d0c3a5c56700afbe1f2a62
 		}
 
 	}
@@ -61,9 +72,14 @@ public class ServerController {
 		while (true) {
 			try {
 				Socket aSocket = serverSocket.accept();
+<<<<<<< HEAD
 				Student student = login(aSocket);
 				ClientReceiver receiver = new ClientReceiver(aSocket, courses, student);
 				pool.execute(receiver);
+=======
+				//ClientReceiver receiver = new ClientReceiver(aSocket, c, student);
+				//pool.execute(receiver);
+>>>>>>> d1fbf7391ebf73c8c5d0c3a5c56700afbe1f2a62
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
