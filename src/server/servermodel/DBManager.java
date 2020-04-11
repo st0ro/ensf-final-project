@@ -44,5 +44,13 @@ public class DBManager {
 		}
 		return null;
 	}
+	
+	public Student attemptLogin(String username, String password) {
+		for (Student s: studentList) {
+			if (s.getStudentName().equals(username) && s.getPassword().equals(password))
+				return s;
+		}
+		return null;
+	}
 
 }

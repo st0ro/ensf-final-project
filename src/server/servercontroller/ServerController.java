@@ -32,7 +32,7 @@ public class ServerController {
 		}
 	}
 
-	public Student login(Socket socket) {
+	/*public Student login(Socket socket) { //replaced to have client reciever handle login instead of server controller
 		try {
 			socketIn = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			socketOut = new PrintWriter(socket.getOutputStream(), true);
@@ -43,18 +43,23 @@ public class ServerController {
 			e.printStackTrace();
 		}
 		return null;
-	}
+	}*/
 
 	public void communicate(CourseCatalogue c) {
 		while (true) {
 			try {
 				Socket aSocket = serverSocket.accept();
-				//ClientReceiver receiver = new ClientReceiver(aSocket, c, student);
-				//pool.execute(receiver);
+				ClientReceiver receiver = new ClientReceiver(aSocket, c, this);
+				pool.execute(receiver);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 		}
+	}
+	
+	//could be replaced with a direct link from ClientReciever to DBManager I suppose
+	public Student attemptLogin(String username, String password) {
+		return database.attemptLogin(username, password);
 	}
 
 	public static void main(String[] args) {
