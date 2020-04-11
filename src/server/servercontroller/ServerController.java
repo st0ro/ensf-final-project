@@ -38,7 +38,7 @@ public class ServerController {
 			socketOut = new PrintWriter(socket.getOutputStream(), true);
 			String input = socketIn.readLine();
 			String[] arr = input.split(" ");
-			Student s = database.search(); 
+			//Student s = database.search(); // Don't commit non-functional code
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -49,8 +49,8 @@ public class ServerController {
 		while (true) {
 			try {
 				Socket aSocket = serverSocket.accept();
-				ClientReceiver receiver = new ClientReceiver(aSocket, c, student);
-				pool.execute(receiver);
+				//ClientReceiver receiver = new ClientReceiver(aSocket, c, student);
+				//pool.execute(receiver);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
