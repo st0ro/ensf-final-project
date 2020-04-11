@@ -20,6 +20,7 @@ public class ServerController {
 	private BufferedReader socketIn;
 	private PrintWriter socketOut;
 	private DBManager database;
+	private CourseCatalogue courses;
 
 	public ServerController(int portNumber) {
 		try {
@@ -27,29 +28,41 @@ public class ServerController {
 			pool = Executors.newCachedThreadPool();
 			database = new DBManager();
 			database.readFromDataBase();
+			courses = new CourseCatalogue();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 
 	public Student login(Socket socket) {
-		try {
-			socketIn = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-			socketOut = new PrintWriter(socket.getOutputStream(), true);
-			String input = socketIn.readLine();
-			String[] arr = input.split(" ");
-			Student s = database.search(); 
-		} catch (IOException e) {
-			e.printStackTrace();
+		while (true) {
+			try {
+				socketIn = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+				socketOut = new PrintWriter(socket.getOutputStream(), true);
+				String input = socketIn.readLine();
+				String[] arr = input.split(" ");
+				Student s = database.searchStudent();
+				if (s == null) {
+					socketOut.print(0);
+					continue;
+				} else {
+					socketOut.print(1);
+					return s;
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			return null;
 		}
-		return null;
+
 	}
 
-	public void communicate(CourseCatalogue c) {
+	public void communicate() {
 		while (true) {
 			try {
 				Socket aSocket = serverSocket.accept();
-				ClientReceiver receiver = new ClientReceiver(aSocket, c, student);
+				Student student = login(aSocket);
+				ClientReceiver receiver = new ClientReceiver(aSocket, courses, student);
 				pool.execute(receiver);
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -60,9 +73,8 @@ public class ServerController {
 	public static void main(String[] args) {
 		ServerController server = new ServerController(25565);
 		System.out.println("Server is now running.");
-		CourseCatalogue courses = new CourseCatalogue();
 
-		server.communicate(courses);
+		server.communicate();
 
 	}
 
