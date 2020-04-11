@@ -12,7 +12,7 @@ public class Student {
 	public Student (String studentName, int studentId, String password) {
 		this.setStudentName(studentName);
 		this.setStudentId(studentId);
-		this.password = password;
+		this.setPassword(password);
 		studentRegList = new ArrayList<Registration>();
 	}
 
@@ -59,6 +59,18 @@ public class Student {
 			}
 		}
 		System.out.println("This student is not taking this course.");
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+	
+	public ArrayList<Registration> getRegList() {
+		return studentRegList;
 	}
 
 }
