@@ -38,37 +38,25 @@ public class ClientReceiver implements Runnable {
 			try {
 				line = socketIn.readLine();
 			} catch (IOException e) {
-				socketOut.write("Invalid input, please try again");
 				continue;
 			}
-			switch (line) {
+			arr = line.split(" ");
+			switch (arr[0]) {
 
-			case "search":
-				try {
-					line = socketIn.readLine();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-				arr = line.split(" ");
-				Course found1 = catalogue.searchCat(arr[0], Integer.parseInt(arr[1]));
-				if (found1 == null)
-					socketOut.write("Course not found");
-				else
-					socketOut.write(found1.toString());
+			case "catalog":
+				socketOut.write(catalogue.toString());
+				break;
+			
+			case "enrolled":
+				socketOut.write(theStudent.toString());
 				break;
 
-			case "add":
-				try {
-					line = socketIn.readLine();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-				arr = line.split(" ");
-				Course found2 = catalogue.searchCat(arr[0], Integer.parseInt(arr[1]));
+			case "enroll":
+				Course found2 = catalogue.searchCat(arr[1], Integer.parseInt(arr[2]));
 				if (found2 == null)
 					socketOut.write("Enrollment failed\nCourse not found");
 				else {
-					CourseOffering offering = found2.getCourseOfferingAt(Integer.parseInt(arr[2]) - 1);
+					CourseOffering offering = found2.getCourseOfferingAt(Integer.parseInt(arr[3]) - 1);
 					if (offering == null)
 						socketOut.write("Enrollment failed\nNo offering found");
 					else if (offering.getOfferingRegList().size() == offering.getSecCap())
@@ -81,16 +69,14 @@ public class ClientReceiver implements Runnable {
 				}
 				break;
 
-			case "remove":
-
-			case "viewall":
-
-			case "viewstudent":
-
-			case "quit":
+			case "unenroll":
+				Course found3 = catalogue.searchCat(arr[1], Integer.parseInt(arr[2]));
+				theStudent.removeCourse(found3);
+				break;
 
 			default:
-
+				socketOut.print("An error occured");
+				continue;
 			}
 		}
 

@@ -41,7 +41,7 @@ public class ServerController {
 				socketOut = new PrintWriter(socket.getOutputStream(), true);
 				String input = socketIn.readLine();
 				String[] arr = input.split(" ");
-				Student s = database.searchStudent();
+				Student s = database.searchStudent(Integer.parseInt(arr[0]));
 				if (s == null) {
 					socketOut.print(0);
 					continue;
