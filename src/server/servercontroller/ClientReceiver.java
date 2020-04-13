@@ -42,7 +42,7 @@ public class ClientReceiver implements Runnable {
 				Student student = controller.attemptLogin(args[0], args[1]);
 				if (student != null) {
 					theStudent = student;
-					socketOut.print(1);
+					socketOut.println(1);
 					break;
 				}
 			}
