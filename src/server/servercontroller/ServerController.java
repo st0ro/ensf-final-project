@@ -24,6 +24,14 @@ public class ServerController {
 			database = new DBManager();
 			database.readFromDataBase();
 			courses = new CourseCatalogue();
+			courses.createCourseOffering(courses.searchCat("ENGG", 233), 1, 100);
+			courses.createCourseOffering(courses.searchCat("ENGG", 233), 2, 150);
+			courses.createCourseOffering(courses.searchCat("ENSF", 409), 1, 100);
+			courses.createCourseOffering(courses.searchCat("PHYS", 259), 1, 100);
+			courses.createCourseOffering(courses.searchCat("ENGG", 200), 1, 100);
+			courses.createCourseOffering(courses.searchCat("ENGG", 200), 2, 200);
+			courses.createCourseOffering(courses.searchCat("MATH", 275), 1, 100);
+			courses.createCourseOffering(courses.searchCat("MATH", 277), 1, 100);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
