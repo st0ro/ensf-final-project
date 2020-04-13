@@ -40,8 +40,7 @@ public class ClientController {
 	
 	public boolean attemptLogIn(String user, String password) {
 		try {
-			socketOut.println(user);
-			socketOut.println(password);
+			socketOut.println(user + " " + password);
 			int result = Integer.parseInt(socketIn.readLine());
 			switch(result) { //0 = no such user, 1 = student login, 2 = admin login
 			case 0:

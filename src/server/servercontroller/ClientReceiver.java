@@ -42,6 +42,7 @@ public class ClientReceiver implements Runnable {
 				Student student = controller.attemptLogin(args[0], args[1]);
 				if (student != null) {
 					theStudent = student;
+					socketOut.print(1);
 					break;
 				}
 			}
@@ -71,10 +72,10 @@ public class ClientReceiver implements Runnable {
 					}
 					break;
 				case "add":
-					//for admin
+					// TODO: For the admin section
 					break;
 
-				case "enroll": 
+				case "enroll":
 					Course found2 = catalogue.searchCat(arr[0], Integer.parseInt(arr[1]));
 					if (found2 == null)
 						socketOut.write("Enrollment failed\nCourse not found");
@@ -94,7 +95,7 @@ public class ClientReceiver implements Runnable {
 
 				case "unenroll":
 					Course found3 = catalogue.searchCat(arr[1], Integer.parseInt(arr[2]));
-					theStudent.removeCourse(found3);
+					socketOut.write(theStudent.removeCourse(found3));
 					break;
 
 				default:

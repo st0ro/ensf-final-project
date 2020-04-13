@@ -26,14 +26,14 @@ public class DBManager {
 		courseList.get(2).addPreReq(courseList.get(3));
 		courseList.get(2).addPreReq(courseList.get(4));
 		courseList.get(5).addPreReq(courseList.get(4));
-		studentList.add(new Student("Timmy", 1, "Bob"));
-		studentList.add(new Student("Jimmy", 2, "Bob"));
-		studentList.add(new Student("Joseph", 3, "Bob"));
-		studentList.add(new Student("John", 4, "Bob"));
-		studentList.add(new Student("Bill", 5, "Bob"));
-		studentList.add(new Student("Sam", 6, "Bob"));
+		studentList.add(new Student("Timmy", 1, "123"));
+		studentList.add(new Student("Jimmy", 2, "123"));
+		studentList.add(new Student("Joseph", 3, "123"));
+		studentList.add(new Student("John", 4, "123"));
+		studentList.add(new Student("Bill", 5, "123"));
+		studentList.add(new Student("Sam", 6, "123"));
 		studentList.add(new Student("Bob", 7, "Bob"));
-		studentList.add(new Student("Karen", 8, "Bob"));
+		studentList.add(new Student("Karen", 8, "123"));
 		return courseList;
 	}
 	

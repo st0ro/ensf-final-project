@@ -50,15 +50,14 @@ public class Student {
 			System.out.println("This student is already taking 6 courses. Unable to register for this course.");
 	}
 	
-	public void removeCourse(Course course) {
+	public String removeCourse(Course course) {
 		for (Registration r: studentRegList) {
 			if (course.equals(r.getTheOffering().getTheCourse())) {
 				studentRegList.remove(r);
-				System.out.println("Course removed.");
-				return;
+				return "Course removed.";
 			}
 		}
-		System.out.println("This student is not taking this course.");
+		return "This student is not taking this course.";
 	}
 
 	public String getPassword() {
