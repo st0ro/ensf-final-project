@@ -34,11 +34,19 @@ public class DBManager {
 		while (courseInput.hasNextLine()) {
 			input = courseInput.nextLine();
 			arr = input.split(" ");
+			boolean found = false;
+			Course co = new Course(arr[0], Integer.parseInt(arr[1]));
 			for (Course c : courseList) {
-				if (!c.getCourseName().equals(arr[0]) || c.getCourseNum() != Integer.parseInt(arr[1]))
-					courseList.add(new Course(arr[0], Integer.parseInt(arr[1])));
+				if (c.getCourseName().equals(arr[0]) && c.getCourseNum() == Integer.parseInt(arr[1])) {
+					found = true;
+					co = c;
+					break;
+				}
 			}
-			courses.createCourseOffering(courses.searchCat(arr[0], Integer.parseInt(arr[1])), Integer.parseInt(arr[2]), Integer.parseInt(arr[3]));
+			if(!found) {
+				courseList.add(co);
+			}
+			courses.createCourseOffering(co, Integer.parseInt(arr[2]), Integer.parseInt(arr[3]));
 		}
 		courses.setCourseList(courseList);
 		while (studentInput.hasNextLine()) {
