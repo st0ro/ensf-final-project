@@ -13,14 +13,6 @@ public class CourseCatalogue {
 	private void loadFromDataBase() {
 		DBManager db = new DBManager();
 		setCourseList(db.readFromDataBase());
-		this.createCourseOffering(this.searchCat("ENGG", 233), 1, 100);
-		this.createCourseOffering(this.searchCat("ENGG", 233), 2, 150);
-		this.createCourseOffering(this.searchCat("ENSF", 409), 1, 100);
-		this.createCourseOffering(this.searchCat("PHYS", 259), 1, 100);
-		this.createCourseOffering(this.searchCat("ENGG", 200), 1, 100);
-		this.createCourseOffering(this.searchCat("ENGG", 200), 2, 200);
-		this.createCourseOffering(this.searchCat("MATH", 275), 1, 100);
-		this.createCourseOffering(this.searchCat("MATH", 277), 1, 100);
 	}
 	
 	public void createCourseOffering (Course c, int secNum, int secCap) {

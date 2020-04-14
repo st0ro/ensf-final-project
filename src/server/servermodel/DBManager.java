@@ -1,43 +1,60 @@
 package server.servermodel;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 //This class is simulating a database for our
 //program
 public class DBManager {
 	
-	ArrayList <Course> courseList;
-	ArrayList <Student> studentList;
+	private ArrayList <Course> courseList;
+	private ArrayList <Student> studentList;
+	private CourseCatalogue courses;
+	private Scanner courseInput;
+	private Scanner studentInput;
 
 	public DBManager () {
 		courseList = new ArrayList<Course>();
 		studentList = new ArrayList<Student>();
+		courses = new CourseCatalogue();
+		try {
+			courseInput = new Scanner(new File("database.txt"));
+			studentInput = new Scanner(new File("students.txt"));
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
 	}
 
-	public ArrayList readFromDataBase() {
-		courseList.add(new Course ("ENGG", 233));
-		courseList.add(new Course ("ENSF", 409));
-		courseList.add(new Course ("PHYS", 259));
-		courseList.add(new Course ("ENGG", 200));
-		courseList.add(new Course ("MATH", 275));
-		courseList.add(new Course ("MATH", 277));
-		courseList.get(1).addPreReq(courseList.get(0));
-		courseList.get(1).addPreReq(courseList.get(3));
-		courseList.get(2).addPreReq(courseList.get(3));
-		courseList.get(2).addPreReq(courseList.get(4));
-		courseList.get(5).addPreReq(courseList.get(4));
-		studentList.add(new Student("Timmy", 1, "123"));
-		studentList.add(new Student("Jimmy", 2, "123"));
-		studentList.add(new Student("Joseph", 3, "123"));
-		studentList.add(new Student("John", 4, "123"));
-		studentList.add(new Student("Bill", 5, "123"));
-		studentList.add(new Student("Sam", 6, "123"));
-		studentList.add(new Student("Bob", 7, "Bob"));
-		studentList.add(new Student("Karen", 8, "123"));
+	public ArrayList <Course> readFromDataBase() {
+		String courseName, studentName, studentId, password;
+		int courseNum, secNum, secCap;
+		while (courseInput.hasNext()) {
+			courseName = courseInput.next();
+			courseNum = Integer.parseInt(courseInput.next());
+			for (Course c: courseList) {
+				if (!c.getCourseName().equals(courseName) || c.getCourseNum() != courseNum)
+					courseList.add(new Course(courseName, courseNum));
+			}
+			secNum = Integer.parseInt(courseInput.next());
+			secCap = Integer.parseInt(courseInput.next());
+			courses.createCourseOffering(courses.searchCat(courseName, courseNum), secNum, secCap);
+			courseInput.nextLine();
+		}
+		while (studentInput.hasNext()) {
+			studentName = studentInput.next();
+			studentId = studentInput.next();
+			password = studentInput.next();
+			studentList.add(new Student(studentName, studentId, password));
+			studentInput.nextLine();
+		}
+		courseInput.close();
+		studentInput.close();
 		return courseList;
 	}
 	
-	public Student searchStudent(int id) {
+	public Student searchStudent(String id) {
 		for (Student s: studentList) {
 			if (s.getStudentId() == id)
 				return s;
@@ -51,6 +68,18 @@ public class DBManager {
 				return s;
 		}
 		return null;
+	}
+	
+	public ArrayList <Course> getCourseList() {
+		return courseList;
+	}
+	
+	public ArrayList <Student> getStudentList() {
+		return studentList;
+	}
+	
+	public CourseCatalogue getCourses(){
+		return courses;
 	}
 
 }
