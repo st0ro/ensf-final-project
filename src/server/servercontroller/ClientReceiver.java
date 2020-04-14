@@ -33,6 +33,7 @@ public class ClientReceiver implements Runnable {
 
 	@Override
 	public void run() {
+		boolean running = true;
 		String[] args;
 		try {
 			while (true) { // login loop
@@ -46,7 +47,7 @@ public class ClientReceiver implements Runnable {
 				socketOut.println(0);
 			}
 
-			while (true) { // once logged in, read commands
+			while (running) { // once logged in, read commands
 				args = socketIn.readLine().split(" ");
 
 				switch (args[0]) {
@@ -105,7 +106,7 @@ public class ClientReceiver implements Runnable {
 
 				case "unenroll":
 					Course found3 = catalogue.searchCat(args[1], Integer.parseInt(args[2]));
-					socketOut.println(theStudent.removeCourse(found3));
+					socketOut.println(theStudent.removeRegistration(found3));
 					break;
 
 				case "add":
@@ -113,20 +114,20 @@ public class ClientReceiver implements Runnable {
 					break;
 
 				case "quit":
-					IOException e = new IOException();
-					throw e;
+					running = false;
+					System.out.println("Client disconnected!");
+					break;
 
 				default:
 					socketOut.print("An error occured");
 					continue;
 				}
 			}
-		} catch (IOException e) {
+		} catch (Exception e) {
 			// AFAIK will only throw IOException on unrecoverable errors, terminate if
 			// somehow occurs (should be properly closed by client)
 			// Could happen if server/client loses internet connection?
 			System.out.println("Error communicating with client!. Terminating thread...");
-			e.printStackTrace();
 		}
 	}
 
