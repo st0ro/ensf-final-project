@@ -15,14 +15,14 @@ public class ServerController {
 	private ServerSocket serverSocket;
 	private ExecutorService pool;
 	private DBManager database;
-	//private CourseCatalogue courses;
+	private CourseCatalogue courses;
 
 	public ServerController(int portNumber) {
 		try {
 			serverSocket = new ServerSocket(portNumber);
 			pool = Executors.newCachedThreadPool();
-			//courses = new CourseCatalogue();
-			database = new DBManager();
+			courses = new CourseCatalogue();
+			database = new DBManager(courses);
 			database.readFromDataBase();
 		} catch (IOException e) {
 			e.printStackTrace();

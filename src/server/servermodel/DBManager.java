@@ -15,10 +15,11 @@ public class DBManager {
 	private Scanner courseInput;
 	private Scanner studentInput;
 
-	public DBManager() {
+	public DBManager(CourseCatalogue courseCat) {
 		courseList = new ArrayList<Course>();
 		studentList = new ArrayList<Student>();
-		courses = new CourseCatalogue();
+		courses = courseCat;
+		courseCat.setCourseList(courseList);
 		try {
 			courseInput = new Scanner(new File("database.txt"));
 			studentInput = new Scanner(new File("students.txt"));
@@ -27,7 +28,7 @@ public class DBManager {
 		}
 	}
 
-	public ArrayList<Course> readFromDataBase() {
+	public void readFromDataBase() {
 		String input;
 		String[] arr;
 		while (courseInput.hasNextLine()) {
@@ -47,7 +48,7 @@ public class DBManager {
 		}
 		courseInput.close();
 		studentInput.close();
-		return courseList;
+		return;
 	}
 
 	public Student searchStudent(String id) {

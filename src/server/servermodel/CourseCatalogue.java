@@ -6,10 +6,6 @@ public class CourseCatalogue {
 	
 	private ArrayList <Course> courseList;
 	
-	public CourseCatalogue() {
-		courseList = new ArrayList<Course>();
-	}
-	
 	public void createCourseOffering (Course c, int secNum, int secCap) {
 		if (c!= null) {
 			CourseOffering theOffering = new CourseOffering (secNum, secCap);
