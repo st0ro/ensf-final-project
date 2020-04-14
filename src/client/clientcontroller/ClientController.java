@@ -55,7 +55,7 @@ public class ClientController {
 			}
 		} catch (IOException e) {
 			System.out.println("Communication error! Exiting...");
-			System.exit(1);
+			return false;
 		}
 		return true;
 	}
@@ -107,10 +107,10 @@ public class ClientController {
 				int sections = Integer.parseInt(socketIn.readLine());
 				for(int j = 1; j <= sections; ++j) {
 					if(j == 1) {
-						String[] line = {name, j + "", socketIn.readLine()};
+						String[] line = {name, socketIn.readLine(), socketIn.readLine()};
 						list.add(line);
 					} else {
-						String[] line = {"", j + "", socketIn.readLine()};
+						String[] line = {"", socketIn.readLine(), socketIn.readLine()};
 						list.add(line);
 					}
 				}
@@ -120,7 +120,22 @@ public class ClientController {
 			System.exit(1);
 		}
 		list.trimToSize();
-		clientView.fillTable((String[][])list.toArray(), type);
+		String[][] temp = new String[list.size()][3];
+		for(int i = 0; i < list.size(); i++) {
+			temp[i] = list.get(i);
+		}
+		clientView.fillTable(temp, type);
+	}
+	
+	public void quit() {
+		socketOut.println("quit");
+		socketOut.close();
+		try {
+			socketIn.close();
+			socket.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public static void main (String args[]) {

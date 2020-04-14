@@ -1,22 +1,23 @@
 package client.clientview;
 
+import java.awt.BorderLayout;
+import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-
-import client.clientcontroller.ClientController;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
-
-import java.awt.BorderLayout;
-import java.awt.FlowLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
 import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
+
+import client.clientcontroller.ClientController;
 
 public class ClientView extends JFrame{
 	
@@ -78,7 +79,6 @@ public class ClientView extends JFrame{
 		setLocationRelativeTo(null);
 		setResizable(false);
 		setVisible(true);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 	
 	public void setListeners(ClientController controller) {
@@ -114,6 +114,7 @@ public class ClientView extends JFrame{
 						String result = controller.attemptEnroll(name, section);
 						if(result.isEmpty()) {
 							controller.retrieveCourses(0);
+							controller.retrieveCourses(1);
 						} else {
 							JOptionPane.showMessageDialog(ClientView.this, result, "Enroll", JOptionPane.ERROR_MESSAGE);
 						}
@@ -134,6 +135,7 @@ public class ClientView extends JFrame{
 					if(confirm == 0) {
 						String result = controller.attemptUnenroll(name, section);
 						if(result.isEmpty()) {
+							controller.retrieveCourses(0);
 							controller.retrieveCourses(1);
 						} else {
 							JOptionPane.showMessageDialog(ClientView.this, result, "Remove Course", JOptionPane.ERROR_MESSAGE);
@@ -144,6 +146,12 @@ public class ClientView extends JFrame{
 				}
 			}
 		});
+		addWindowListener(new WindowAdapter() {
+	         public void windowClosing(WindowEvent we) {
+	        	 controller.quit();
+	        	 System.exit(0);
+	         }
+	      });
 	}
 	
 	public void fillTable(String[][] list, int set) {

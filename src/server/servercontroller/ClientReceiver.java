@@ -57,6 +57,7 @@ public class ClientReceiver implements Runnable {
 							socketOut.println(c.getCourseName() + " " + c.getCourseNum());
 							socketOut.println(c.getOfferingList().size());
 							for (CourseOffering co : c.getOfferingList()) {
+								socketOut.println(co.getSecNum());
 								socketOut.println(co.getOfferingRegList().size() + "/" + co.getSecCap() + " students enrolled");
 							}
 						}
