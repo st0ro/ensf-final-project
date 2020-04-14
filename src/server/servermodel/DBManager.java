@@ -40,6 +40,7 @@ public class DBManager {
 			secCap = Integer.parseInt(courseInput.nextLine().trim());
 			courses.createCourseOffering(courses.searchCat(courseName, courseNum), secNum, secCap);
 		}
+		courses.setCourseList(courseList);
 		while (studentInput.hasNext()) {
 			studentName = studentInput.next();
 			studentId = studentInput.next();
