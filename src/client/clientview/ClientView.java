@@ -27,7 +27,7 @@ public class ClientView extends JFrame{
 	private JPanel allPane, allFootPane, enrolledPane, enrolledFootPane;
 	private JTable allTable, enrolledTable;
 	private JScrollPane allScrollPane, enrolledScrollPane;
-	private JButton allSearchBtn, allEnrollBtn, enrolledRemoveBtn;
+	private JButton allSearchBtn, allEnrollBtn, allRefreshBtn, enrolledRemoveBtn, enrolledRefreshBtn;
 	
 	public ClientView() {
 		super("Course Registration System");
@@ -43,8 +43,10 @@ public class ClientView extends JFrame{
 		allScrollPane = new JScrollPane(allTable);
 		allSearchBtn = new JButton("Search");
 		allEnrollBtn = new JButton("Enroll");
+		allRefreshBtn = new JButton("Refresh");
 		allFootPane = new JPanel();
 		((FlowLayout) allFootPane.getLayout()).setAlignment(FlowLayout.RIGHT);
+		allFootPane.add(allRefreshBtn);
 		allFootPane.add(allSearchBtn);
 		allFootPane.add(allEnrollBtn);
 		allPane = new JPanel();
@@ -62,8 +64,10 @@ public class ClientView extends JFrame{
 		enrolledTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		enrolledScrollPane = new JScrollPane(enrolledTable);
 		enrolledRemoveBtn = new JButton("Remove course");
+		enrolledRefreshBtn = new JButton("Refresh");
 		enrolledFootPane = new JPanel();
 		((FlowLayout) enrolledFootPane.getLayout()).setAlignment(FlowLayout.RIGHT);
+		enrolledFootPane.add(enrolledRefreshBtn);
 		enrolledFootPane.add(enrolledRemoveBtn);
 		enrolledPane = new JPanel();
 		enrolledPane.setLayout(new BorderLayout());
@@ -124,6 +128,13 @@ public class ClientView extends JFrame{
 				}
 			}
 		});
+		allRefreshBtn.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				controller.retrieveCourses(0);
+				controller.retrieveCourses(1);
+			}
+		});
 		enrolledRemoveBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -144,6 +155,13 @@ public class ClientView extends JFrame{
 				} else {
 					JOptionPane.showMessageDialog(ClientView.this, "Please select a class to remove.", "Remove Course", JOptionPane.ERROR_MESSAGE);
 				}
+			}
+		});
+		enrolledRefreshBtn.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				controller.retrieveCourses(0);
+				controller.retrieveCourses(1);
 			}
 		});
 		addWindowListener(new WindowAdapter() {
