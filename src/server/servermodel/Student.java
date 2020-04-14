@@ -3,13 +3,13 @@ package server.servermodel;
 import java.util.ArrayList;
 
 public class Student {
-	
+
 	private String studentName;
 	private int studentId;
 	private String password;
 	private ArrayList<Registration> studentRegList;
-	
-	public Student (String studentName, int studentId, String password) {
+
+	public Student(String studentName, int studentId, String password) {
 		this.setStudentName(studentName);
 		this.setStudentId(studentId);
 		this.setPassword(password);
@@ -31,19 +31,18 @@ public class Student {
 	public void setStudentId(int studentId) {
 		this.studentId = studentId;
 	}
-	
+
 	public boolean hasCourse(Course c) {
-		for(Registration r: studentRegList) {
-			if(r.getTheOffering().getTheCourse().equals(c))
+		for (Registration r : studentRegList) {
+			if (r.getTheOffering().getTheCourse().equals(c))
 				return true;
 		}
 		return false;
 	}
-	
+
 	@Override
-	public String toString () {
-		String st = "Student Name: " + getStudentName() + "\n" +
-				"Student Id: " + getStudentId() + "\n\n";
+	public String toString() {
+		String st = "Student Name: " + getStudentName() + "\n" + "Student Id: " + getStudentId() + "\n\n";
 		st += "All courses taken by this student: \n";
 		for (Registration r : studentRegList) {
 			st += r.getTheOffering();
@@ -56,15 +55,17 @@ public class Student {
 		if (studentRegList.size() < 6)
 			studentRegList.add(registration);
 	}
-	
-	public String removeCourse(Course course) {
-		for (Registration r: studentRegList) {
-			if (course.equals(r.getTheOffering().getTheCourse())) {
+
+	public String removeRegistration(Course toRemove) {
+		for (Registration r : studentRegList) {
+			if (r.getTheOffering().getTheCourse().equals(toRemove)) {
+				r.getTheOffering().removeStudent(this);
 				studentRegList.remove(r);
 				return "Course removed.";
 			}
 		}
 		return "fail";
+
 	}
 
 	public String getPassword() {
@@ -74,7 +75,7 @@ public class Student {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	
+
 	public ArrayList<Registration> getRegList() {
 		return studentRegList;
 	}

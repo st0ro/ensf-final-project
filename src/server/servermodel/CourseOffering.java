@@ -50,6 +50,14 @@ public class CourseOffering {
 		return offeringRegList;
 	}
 	
+	public void removeStudent(Student st) {
+		for(int i = 0; i<offeringRegList.size(); i++) {
+			if(offeringRegList.get(i).getTheStudent().equals(st)) {
+				offeringRegList.remove(i);
+			}
+		}
+	}
+	
 
 	
 	
