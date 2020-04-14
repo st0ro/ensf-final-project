@@ -1,3 +1,4 @@
+// Written by A. Price
 package client.clientview;
 
 import java.awt.Container;

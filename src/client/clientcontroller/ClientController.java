@@ -1,3 +1,4 @@
+// Written by A. Price
 package client.clientcontroller;
 
 import java.io.BufferedReader;
