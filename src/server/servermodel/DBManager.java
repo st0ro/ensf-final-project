@@ -8,14 +8,14 @@ import java.util.Scanner;
 //This class is simulating a database for our
 //program
 public class DBManager {
-	
-	private ArrayList <Course> courseList;
-	private ArrayList <Student> studentList;
+
+	private ArrayList<Course> courseList;
+	private ArrayList<Student> studentList;
 	private CourseCatalogue courses;
 	private Scanner courseInput;
 	private Scanner studentInput;
 
-	public DBManager () {
+	public DBManager() {
 		courseList = new ArrayList<Course>();
 		studentList = new ArrayList<Student>();
 		courses = new CourseCatalogue();
@@ -27,57 +27,54 @@ public class DBManager {
 		}
 	}
 
-	public ArrayList <Course> readFromDataBase() {
-		String courseName, studentName, studentId, password;
-		int courseNum, secNum, secCap;
-		while (courseInput.hasNext()) {
-			courseName = courseInput.next();
-			courseNum = Integer.parseInt(courseInput.next());
-			for (Course c: courseList) {
-				if (!c.getCourseName().equals(courseName) || c.getCourseNum() != courseNum)
-					courseList.add(new Course(courseName, courseNum));
+	public ArrayList<Course> readFromDataBase() {
+		String input;
+		String[] arr;
+		while (courseInput.hasNextLine()) {
+			input = courseInput.nextLine();
+			arr = input.split(" ");
+			for (Course c : courseList) {
+				if (!c.getCourseName().equals(arr[0]) || c.getCourseNum() != Integer.parseInt(arr[1]))
+					courseList.add(new Course(arr[0], Integer.parseInt(arr[1])));
 			}
-			secNum = Integer.parseInt(courseInput.next());
-			secCap = Integer.parseInt(courseInput.nextLine().trim());
-			courses.createCourseOffering(courses.searchCat(courseName, courseNum), secNum, secCap);
+			courses.createCourseOffering(courses.searchCat(arr[0], Integer.parseInt(arr[1])), Integer.parseInt(arr[2]), Integer.parseInt(arr[3]));
 		}
 		courses.setCourseList(courseList);
-		while (studentInput.hasNext()) {
-			studentName = studentInput.next();
-			studentId = studentInput.next();
-			password = studentInput.nextLine().trim();
-			studentList.add(new Student(studentName, studentId, password));
+		while (studentInput.hasNextLine()) {
+			input = studentInput.nextLine();
+			arr = input.split(" ");
+			studentList.add(new Student(arr[0], arr[1], arr[2]));
 		}
 		courseInput.close();
 		studentInput.close();
 		return courseList;
 	}
-	
+
 	public Student searchStudent(String id) {
-		for (Student s: studentList) {
+		for (Student s : studentList) {
 			if (s.getStudentId() == id)
 				return s;
 		}
 		return null;
 	}
-	
+
 	public Student attemptLogin(String username, String password) {
-		for (Student s: studentList) {
+		for (Student s : studentList) {
 			if (s.getStudentName().equals(username) && s.getPassword().equals(password))
 				return s;
 		}
 		return null;
 	}
-	
-	public ArrayList <Course> getCourseList() {
+
+	public ArrayList<Course> getCourseList() {
 		return courseList;
 	}
-	
-	public ArrayList <Student> getStudentList() {
+
+	public ArrayList<Student> getStudentList() {
 		return studentList;
 	}
-	
-	public CourseCatalogue getCourses(){
+
+	public CourseCatalogue getCourses() {
 		return courses;
 	}
 
