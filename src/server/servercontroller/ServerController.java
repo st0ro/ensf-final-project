@@ -15,15 +15,15 @@ public class ServerController {
 	private ServerSocket serverSocket;
 	private ExecutorService pool;
 	private DBManager database;
-	private CourseCatalogue courses;
+	//private CourseCatalogue courses;
 
 	public ServerController(int portNumber) {
 		try {
 			serverSocket = new ServerSocket(portNumber);
 			pool = Executors.newCachedThreadPool();
-			courses = new CourseCatalogue();
+			//courses = new CourseCatalogue();
 			database = new DBManager();
-			database.readFromDataBase(courses);
+			database.readFromDataBase();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -38,7 +38,7 @@ public class ServerController {
 			try {
 				Socket aSocket = serverSocket.accept();
 				System.out.println("Client connected!");
-				ClientReceiver receiver = new ClientReceiver(aSocket, courses, this);
+				ClientReceiver receiver = new ClientReceiver(aSocket, database.getCourses(), this);
 				pool.execute(receiver);
 			} catch (IOException e) {
 				e.printStackTrace();

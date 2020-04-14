@@ -18,6 +18,7 @@ public class DBManager {
 	public DBManager () {
 		courseList = new ArrayList<Course>();
 		studentList = new ArrayList<Student>();
+		courses = new CourseCatalogue();
 		try {
 			courseInput = new Scanner(new File("database.txt"));
 			studentInput = new Scanner(new File("students.txt"));
@@ -26,7 +27,7 @@ public class DBManager {
 		}
 	}
 
-	public ArrayList <Course> readFromDataBase(CourseCatalogue courses) {
+	public ArrayList <Course> readFromDataBase() {
 		String courseName, studentName, studentId, password;
 		int courseNum, secNum, secCap;
 		while (courseInput.hasNext()) {
