@@ -21,9 +21,9 @@ public class ServerController {
 		try {
 			serverSocket = new ServerSocket(portNumber);
 			pool = Executors.newCachedThreadPool();
-			database = new DBManager();
-			database.readFromDataBase();
 			courses = new CourseCatalogue();
+			database = new DBManager();
+			database.readFromDataBase(courses);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

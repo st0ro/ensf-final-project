@@ -18,7 +18,6 @@ public class DBManager {
 	public DBManager () {
 		courseList = new ArrayList<Course>();
 		studentList = new ArrayList<Student>();
-		courses = new CourseCatalogue();
 		try {
 			courseInput = new Scanner(new File("database.txt"));
 			studentInput = new Scanner(new File("students.txt"));
@@ -27,7 +26,7 @@ public class DBManager {
 		}
 	}
 
-	public ArrayList <Course> readFromDataBase() {
+	public ArrayList <Course> readFromDataBase(CourseCatalogue courses) {
 		String courseName, studentName, studentId, password;
 		int courseNum, secNum, secCap;
 		while (courseInput.hasNext()) {
@@ -38,16 +37,14 @@ public class DBManager {
 					courseList.add(new Course(courseName, courseNum));
 			}
 			secNum = Integer.parseInt(courseInput.next());
-			secCap = Integer.parseInt(courseInput.next());
+			secCap = Integer.parseInt(courseInput.nextLine().trim());
 			courses.createCourseOffering(courses.searchCat(courseName, courseNum), secNum, secCap);
-			courseInput.nextLine();
 		}
 		while (studentInput.hasNext()) {
 			studentName = studentInput.next();
 			studentId = studentInput.next();
-			password = studentInput.next();
+			password = studentInput.nextLine().trim();
 			studentList.add(new Student(studentName, studentId, password));
-			studentInput.nextLine();
 		}
 		courseInput.close();
 		studentInput.close();

@@ -6,13 +6,8 @@ public class CourseCatalogue {
 	
 	private ArrayList <Course> courseList;
 	
-	public CourseCatalogue () {
-		loadFromDataBase ();
-	}
-	
-	private void loadFromDataBase() {
-		DBManager db = new DBManager();
-		setCourseList(db.readFromDataBase());
+	public CourseCatalogue() {
+		courseList = new ArrayList<Course>();
 	}
 	
 	public void createCourseOffering (Course c, int secNum, int secCap) {
