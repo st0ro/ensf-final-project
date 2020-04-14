@@ -37,6 +37,7 @@ public class ServerController {
 		while (true) {
 			try {
 				Socket aSocket = serverSocket.accept();
+				System.out.println("Client connected!");
 				ClientReceiver receiver = new ClientReceiver(aSocket, courses, this);
 				pool.execute(receiver);
 			} catch (IOException e) {
@@ -48,7 +49,6 @@ public class ServerController {
 	public static void main(String[] args) {
 		ServerController server = new ServerController(25565);
 		System.out.println("Server is now running.");
-
 		server.communicate();
 
 	}

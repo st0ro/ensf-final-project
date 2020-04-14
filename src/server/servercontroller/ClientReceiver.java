@@ -16,7 +16,6 @@ public class ClientReceiver implements Runnable {
 
 	private BufferedReader socketIn;
 	private PrintWriter socketOut;
-	private String[] arr;
 	private CourseCatalogue catalogue;
 	private Student theStudent;
 	private ServerController controller;
@@ -34,7 +33,6 @@ public class ClientReceiver implements Runnable {
 
 	@Override
 	public void run() {
-		String line = "";
 		String[] args;
 		try {
 			while (true) { // login loop
@@ -45,10 +43,12 @@ public class ClientReceiver implements Runnable {
 					socketOut.println(1);
 					break;
 				}
+				socketOut.println(0);
 			}
 
 			while (true) { // once logged in, read commands
 				args = socketIn.readLine().split(" ");
+
 				switch (args[0]) {
 				case "get":
 					if (args[1].equals("catalog")) {
@@ -57,7 +57,7 @@ public class ClientReceiver implements Runnable {
 							socketOut.println(c.getCourseName() + " " + c.getCourseNum());
 							socketOut.println(c.getOfferingList().size());
 							for (CourseOffering co : c.getOfferingList()) {
-								socketOut.println(co.getSecNum() + "/" + co.getSecCap() + " students enrolled");
+								socketOut.println(co.getOfferingRegList().size() + "/" + co.getSecCap() + " students enrolled");
 							}
 						}
 					} else if (args[1].equals("enrolled")) {
@@ -65,50 +65,66 @@ public class ClientReceiver implements Runnable {
 						for (Registration r : theStudent.getRegList()) {
 							socketOut.println(r.getTheOffering().getTheCourse().getCourseName() + " "
 									+ r.getTheOffering().getTheCourse().getCourseNum());
-							socketOut.println("1");
-							socketOut.println(r.getTheOffering().getSecNum() + "/" + r.getTheOffering().getSecCap()
+							socketOut.println(r.getTheOffering().getSecNum());
+							socketOut.println(r.getTheOffering().getOfferingRegList().size() + "/" + r.getTheOffering().getSecCap()
 									+ " students enrolled");
 						}
 					}
 					break;
-				case "add":
-					// TODO: For the admin section
-					break;
 
 				case "enroll":
-					Course found2 = catalogue.searchCat(arr[0], Integer.parseInt(arr[1]));
-					if (found2 == null)
-						socketOut.write("Enrollment failed\nCourse not found");
-					else {
-						CourseOffering offering = found2.getCourseOfferingAt(Integer.parseInt(arr[3]) - 1);
-						if (offering == null)
-							socketOut.write("Enrollment failed\nNo offering found");
-						else if (offering.getOfferingRegList().size() == offering.getSecCap())
-							socketOut.write("Enrollment failed\nSection is full");
-						else {
+					if (theStudent.getRegList().size() == 6) {
+						socketOut.println("fail");
+						socketOut.println("You cannot register for more than 6 courses");
+						break;
+					}
+					Course found2 = catalogue.searchCat(args[1], Integer.parseInt(args[2]));
+					if (found2 == null) {
+						socketOut.println("fail");
+						socketOut.println("Enrollment failed, course not found");
+					} else if (theStudent.hasCourse(found2)) {
+						socketOut.println("fail");
+						socketOut.println("You are already registered for this course");
+					} else {
+						CourseOffering offering = found2.getCourseOfferingAt(Integer.parseInt(args[3]) - 1);
+						if (offering == null) {
+							socketOut.println("fail");
+							socketOut.println("Enrollment failed, no offering found");
+						} else if (offering.getOfferingRegList().size() == offering.getSecCap()) {
+							socketOut.println("fail");
+							socketOut.println("Enrollment failed, section is full");
+						} else {
 							Registration reg = new Registration();
-							reg.startRegistration(theStudent, found2);
-							socketOut.write("Registration successful");
+							reg.completeRegistration(theStudent, offering);
+							socketOut.println("Registration successful");
 						}
 					}
 					break;
 
 				case "unenroll":
-					Course found3 = catalogue.searchCat(arr[1], Integer.parseInt(arr[2]));
-					socketOut.write(theStudent.removeCourse(found3));
+					Course found3 = catalogue.searchCat(args[1], Integer.parseInt(args[2]));
+					socketOut.println(theStudent.removeCourse(found3));
 					break;
+
+				case "add":
+					// TODO: For the admin section
+					break;
+
+				case "quit":
+					IOException e = new IOException();
+					throw e;
 
 				default:
 					socketOut.print("An error occured");
 					continue;
-
 				}
 			}
-		} catch (Exception e) {
+		} catch (IOException e) {
 			// AFAIK will only throw IOException on unrecoverable errors, terminate if
 			// somehow occurs (should be properly closed by client)
 			// Could happen if server/client loses internet connection?
 			System.out.println("Error communicating with client!. Terminating thread...");
+			e.printStackTrace();
 		}
 	}
 

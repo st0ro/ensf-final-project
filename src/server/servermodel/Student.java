@@ -31,6 +31,15 @@ public class Student {
 	public void setStudentId(int studentId) {
 		this.studentId = studentId;
 	}
+	
+	public boolean hasCourse(Course c) {
+		for(Registration r: studentRegList) {
+			if(r.getTheOffering().getTheCourse().equals(c))
+				return true;
+		}
+		return false;
+	}
+	
 	@Override
 	public String toString () {
 		String st = "Student Name: " + getStudentName() + "\n" +
@@ -46,8 +55,6 @@ public class Student {
 	public void addRegistration(Registration registration) {
 		if (studentRegList.size() < 6)
 			studentRegList.add(registration);
-		else
-			System.out.println("This student is already taking 6 courses. Unable to register for this course.");
 	}
 	
 	public String removeCourse(Course course) {
@@ -57,7 +64,7 @@ public class Student {
 				return "Course removed.";
 			}
 		}
-		return "This student is not taking this course.";
+		return "fail";
 	}
 
 	public String getPassword() {

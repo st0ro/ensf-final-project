@@ -50,6 +50,8 @@ public class CourseOffering {
 		return offeringRegList;
 	}
 	
+
+	
 	
 
 }
