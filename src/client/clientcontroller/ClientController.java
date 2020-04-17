@@ -51,7 +51,8 @@ public class ClientController {
 				retrieveCourses(1);
 				return true;
 			case 2:
-				clientView.setAdmin();
+				retrieveCourses(0);
+				clientView.setAdmin(this);
 				return true;
 			}
 		} catch (IOException e) {
@@ -72,7 +73,7 @@ public class ClientController {
 			System.out.println("Communication error! Exiting...");
 			System.exit(1);
 		}
-		return "";
+		return null;
 		
 	}
 	
@@ -87,7 +88,7 @@ public class ClientController {
 			System.out.println("Communication error! Exiting...");
 			System.exit(1);
 		}
-		return "";
+		return null;
 		
 	}
 	
@@ -126,6 +127,21 @@ public class ClientController {
 			temp[i] = list.get(i);
 		}
 		clientView.fillTable(temp, type);
+	}
+	
+	public String attemptAdminAddOperation(String courseName, String seats) {
+		try {
+			socketOut.println("admin");
+			socketOut.println(courseName);
+			socketOut.println(seats);
+			String result = socketIn.readLine();
+			if(result.equals("fail")) {
+				return socketIn.readLine();
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 	
 	public void quit() {

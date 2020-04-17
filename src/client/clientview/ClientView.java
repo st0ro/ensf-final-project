@@ -25,10 +25,11 @@ public class ClientView extends JFrame{
 	private static final long serialVersionUID = 998423311465136417L;
 	
 	private JTabbedPane tabbedPane;
-	private JPanel allPane, allFootPane, enrolledPane, enrolledFootPane;
+	private JPanel allPane, allFootPane, enrolledPane, enrolledFootPane, adminFootPane;
 	private JTable allTable, enrolledTable;
 	private JScrollPane allScrollPane, enrolledScrollPane;
 	private JButton allSearchBtn, allEnrollBtn, allRefreshBtn, enrolledRemoveBtn, enrolledRefreshBtn;
+	private JButton adminAddCourseBtn, adminAddOfferingBtn;
 	
 	public ClientView() {
 		super("Course Registration System");
@@ -46,7 +47,7 @@ public class ClientView extends JFrame{
 		allEnrollBtn = new JButton("Enroll");
 		allRefreshBtn = new JButton("Refresh");
 		allFootPane = new JPanel();
-		((FlowLayout) allFootPane.getLayout()).setAlignment(FlowLayout.RIGHT);
+		allFootPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 		allFootPane.add(allRefreshBtn);
 		allFootPane.add(allSearchBtn);
 		allFootPane.add(allEnrollBtn);
@@ -67,7 +68,7 @@ public class ClientView extends JFrame{
 		enrolledRemoveBtn = new JButton("Remove course");
 		enrolledRefreshBtn = new JButton("Refresh");
 		enrolledFootPane = new JPanel();
-		((FlowLayout) enrolledFootPane.getLayout()).setAlignment(FlowLayout.RIGHT);
+		enrolledFootPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 		enrolledFootPane.add(enrolledRefreshBtn);
 		enrolledFootPane.add(enrolledRemoveBtn);
 		enrolledPane = new JPanel();
@@ -92,7 +93,7 @@ public class ClientView extends JFrame{
 			public void actionPerformed(ActionEvent arg0) {
 				try {
 					String search = JOptionPane.showInputDialog("Please enter the course to search for:").toUpperCase();
-					if(search.isEmpty()) {
+					if(search == null) {
 						return;
 					}
 					for(int i = 0; i < allTable.getRowCount(); i++) {
@@ -115,9 +116,9 @@ public class ClientView extends JFrame{
 					int section = Integer.parseInt((String) allTable.getValueAt(row, 1));
 					String name = (String) allTable.getValueAt(row - section + 1, 0);
 					int confirm = JOptionPane.showConfirmDialog(ClientView.this, "Do you wish to enroll in " + name + "?", "Enroll", JOptionPane.OK_CANCEL_OPTION);
-					if(confirm == 0) {
+					if(confirm == JOptionPane.OK_OPTION) {
 						String result = controller.attemptEnroll(name, section);
-						if(result.isEmpty()) {
+						if(result == null) {
 							controller.retrieveCourses(0);
 							controller.retrieveCourses(1);
 						} else {
@@ -144,9 +145,9 @@ public class ClientView extends JFrame{
 					int section = Integer.parseInt((String) enrolledTable.getValueAt(row, 1));
 					String name = (String) enrolledTable.getValueAt(row, 0);
 					int confirm = JOptionPane.showConfirmDialog(ClientView.this, "Do you wish to remove " + name + "?", "Remove Course", JOptionPane.OK_CANCEL_OPTION);
-					if(confirm == 0) {
+					if(confirm == JOptionPane.OK_OPTION) {
 						String result = controller.attemptUnenroll(name, section);
-						if(result.isEmpty()) {
+						if(result == null) {
 							controller.retrieveCourses(0);
 							controller.retrieveCourses(1);
 						} else {
@@ -190,8 +191,61 @@ public class ClientView extends JFrame{
 		return new DefaultTableModel(list, headers);
 	}
 	
-	public void setAdmin() {
-		// TODO enable admin mode
+	public void setAdmin(ClientController controller) {
+		tabbedPane.remove(enrolledPane);
+		allPane.remove(allFootPane);
+		adminAddCourseBtn = new JButton("Add course");
+		adminAddCourseBtn.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				 String course = JOptionPane.showInputDialog(ClientView.this, "Please enter the course name and number:",
+						 "Add Course", JOptionPane.PLAIN_MESSAGE);
+				 if(course == null) {
+					 return;
+				 }
+				 String seats = JOptionPane.showInputDialog(ClientView.this, "Please enter the number of seats in the first offering:",
+						 "Add Course", JOptionPane.PLAIN_MESSAGE);
+				 if(seats == null) {
+					 return;
+				 }
+				 String response = controller.attemptAdminAddOperation(course, seats);
+				 if(response == null) {
+					 controller.retrieveCourses(0);
+				 }
+				 else {
+					 JOptionPane.showMessageDialog(ClientView.this, response, "Add Course", JOptionPane.ERROR_MESSAGE);
+				 }
+			}
+		});
+		adminAddOfferingBtn = new JButton("Add offering");
+		adminAddOfferingBtn.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				int row = allTable.getSelectedRow();
+				if(row >= 0) {
+					int section = Integer.parseInt((String) allTable.getValueAt(row, 1));
+					String course = (String) allTable.getValueAt(row - section + 1, 0);
+					String seats = JOptionPane.showInputDialog(ClientView.this, "Please enter the number of seats in the new offering:",
+							 "Add Offering", JOptionPane.PLAIN_MESSAGE);
+					if(seats != null) {
+						String result = controller.attemptAdminAddOperation(course, seats);
+						if(result == null) {
+							controller.retrieveCourses(0);
+						} else {
+							JOptionPane.showMessageDialog(ClientView.this, result, "Add Offering", JOptionPane.ERROR_MESSAGE);
+						}
+					}
+				} else {
+					JOptionPane.showMessageDialog(ClientView.this, "Please select a class to add an offering to.", "Add Offering", JOptionPane.ERROR_MESSAGE);
+				}
+			}
+		});
+		adminFootPane = new JPanel();
+		adminFootPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
+		adminFootPane.add(adminAddCourseBtn);
+		adminFootPane.add(adminAddOfferingBtn);
+		allPane.add(adminFootPane, BorderLayout.SOUTH);
+		tabbedPane.repaint();
 	}
 
 }
