@@ -39,6 +39,10 @@ public class ClientReceiver implements Runnable {
 		try {
 			while (true) { // login loop
 				args = socketIn.readLine().split(" ");
+				if(args[0].equals("admin") && args[1].equals("admin")) {
+					socketOut.println(2);
+					break;
+				}
 				Student student = controller.attemptLogin(args[0], args[1]);
 				if (student != null) {
 					theStudent = student;

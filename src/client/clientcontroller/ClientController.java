@@ -49,8 +49,7 @@ public class ClientController {
 				return false;
 			case 1:
 				retrieveCourses(0);
-				//retrieveCourses(1);
-				clientView.setAdmin(this);
+				retrieveCourses(1);
 				return true;
 			case 2:
 				retrieveCourses(0);
