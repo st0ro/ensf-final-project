@@ -110,8 +110,35 @@ public class ClientReceiver implements Runnable {
 					socketOut.println(theStudent.removeRegistration(found3));
 					break;
 
-				case "add":
-					// TODO: For the admin section
+				case "admin":
+					String unparsedName = socketIn.readLine();
+					String[] splitName = unparsedName.split(" ");
+					boolean validNumber;
+					int courseNumber = 0;
+					try {
+						courseNumber = Integer.parseInt(splitName[1]);
+						validNumber = true;
+					} catch(NumberFormatException e) {
+						validNumber = false;
+					}
+					if(splitName.length == 2 && splitName[0].length() == 4 && splitName[1].length() == 3 && validNumber) {
+						Course searchResult = catalogue.searchCat(splitName[0], courseNumber);
+						int seats = Integer.parseInt(socketIn.readLine());
+						if(searchResult == null) {
+							Course newCourse = new Course(splitName[0], courseNumber);
+							newCourse.addOffering(new CourseOffering(1, seats));
+							catalogue.getCourseList().add(newCourse);
+						}
+						else {
+							searchResult.addOffering(new CourseOffering(searchResult.getOfferingList().size(), seats));
+						}
+						// TODO update DB (unless handled by catalogue)
+						socketOut.println("success");
+					}
+					else {
+						socketOut.println("fail");
+						socketOut.println("Invalid course name!");
+					}
 					break;
 
 				case "quit":

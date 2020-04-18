@@ -198,22 +198,20 @@ public class ClientView extends JFrame{
 		adminAddCourseBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				 String course = JOptionPane.showInputDialog(ClientView.this, "Please enter the course name and number:",
-						 "Add Course", JOptionPane.PLAIN_MESSAGE);
-				 if(course == null) {
-					 return;
-				 }
-				 String seats = JOptionPane.showInputDialog(ClientView.this, "Please enter the number of seats in the first offering:",
-						 "Add Course", JOptionPane.PLAIN_MESSAGE);
-				 if(seats == null) {
-					 return;
-				 }
-				 String response = controller.attemptAdminAddOperation(course, seats);
-				 if(response == null) {
-					 controller.retrieveCourses(0);
-				 }
-				 else {
-					 JOptionPane.showMessageDialog(ClientView.this, response, "Add Course", JOptionPane.ERROR_MESSAGE);
+				String course = JOptionPane.showInputDialog(ClientView.this, "Please enter the course name and number:",
+						"Add Course", JOptionPane.PLAIN_MESSAGE).toUpperCase();
+				if(course != null) {
+					String seats = JOptionPane.showInputDialog(ClientView.this, "Please enter the number of seats in the first offering:",
+							"Add Course", JOptionPane.PLAIN_MESSAGE);
+				 	if(seats == null) {
+				 		String response = controller.attemptAdminAddOperation(course, seats);
+				 		if(response == null) {
+					 		controller.retrieveCourses(0);
+				 		}
+				 		else {
+					 		JOptionPane.showMessageDialog(ClientView.this, response, "Add Course", JOptionPane.ERROR_MESSAGE);
+				 		}
+				 	}
 				 }
 			}
 		});
