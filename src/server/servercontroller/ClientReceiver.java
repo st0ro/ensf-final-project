@@ -130,7 +130,7 @@ public class ClientReceiver implements Runnable {
 							catalogue.getCourseList().add(newCourse);
 						}
 						else {
-							searchResult.addOffering(new CourseOffering(searchResult.getOfferingList().size(), seats));
+							searchResult.addOffering(new CourseOffering(searchResult.getOfferingList().size() + 1, seats));
 						}
 						// TODO update DB (unless handled by catalogue)
 						socketOut.println("success");

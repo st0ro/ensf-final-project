@@ -30,6 +30,7 @@ public class ClientController {
 	public void connect() {
 		try {
 			socket = new Socket("70.77.251.191", 25565);
+			//socket = new Socket("localhost", 25565);
 			socketIn = new BufferedReader(new InputStreamReader(
 					socket.getInputStream()));
 			socketOut = new PrintWriter((socket.getOutputStream()), true);
@@ -48,7 +49,8 @@ public class ClientController {
 				return false;
 			case 1:
 				retrieveCourses(0);
-				retrieveCourses(1);
+				//retrieveCourses(1);
+				clientView.setAdmin(this);
 				return true;
 			case 2:
 				retrieveCourses(0);

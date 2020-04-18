@@ -203,7 +203,7 @@ public class ClientView extends JFrame{
 				if(course != null) {
 					String seats = JOptionPane.showInputDialog(ClientView.this, "Please enter the number of seats in the first offering:",
 							"Add Course", JOptionPane.PLAIN_MESSAGE);
-				 	if(seats == null) {
+				 	if(seats != null) {
 				 		String response = controller.attemptAdminAddOperation(course, seats);
 				 		if(response == null) {
 					 		controller.retrieveCourses(0);
