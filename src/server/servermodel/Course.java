@@ -8,6 +8,8 @@ import java.util.ArrayList;
  * @author Tony Fang
  */
 public class Course {
+
+	private int courseID;
 	/**
 	 * The name of the course
 	 */
@@ -36,6 +38,16 @@ public class Course {
 		preReq = new ArrayList<Course>();
 		offeringList = new ArrayList<CourseOffering>();
 	}
+
+	public Course(int courseID, String courseName, int courseNum) {
+		this.setCourseID(courseID);
+		this.setCourseName(courseName);
+		this.setCourseNum(courseNum);
+		// Both of the following are only association
+		preReq = new ArrayList<Course>();
+		offeringList = new ArrayList<CourseOffering>();
+	}
+	
 	/**
 	 * Adds a course offering to the Course object.
 	 * @param offering the CourseOffering object that is added
@@ -117,6 +129,14 @@ public class Course {
 	 */
 	public ArrayList<CourseOffering> getOfferingList() {
 		return offeringList;
+	}
+
+	public int getCourseID() {
+		return courseID;
+	}
+
+	public void setCourseID(int courseID) {
+		this.courseID = courseID;
 	}
 
 }

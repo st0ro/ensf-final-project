@@ -8,6 +8,8 @@ import java.util.ArrayList;
  * @author Tony Fang
  */
 public class CourseOffering {
+	
+	private int offeringID;
 	/**
 	 * The section number of the course offering
 	 */
@@ -34,6 +36,21 @@ public class CourseOffering {
 		this.setSecCap(secCap);
 		offeringRegList = new ArrayList <Registration>();
 	}
+	
+	public CourseOffering (int offeringID, int secNum, int secCap) {
+		this.setOfferingID(offeringID);
+		this.setSecNum(secNum);
+		this.setSecCap(secCap);
+		offeringRegList = new ArrayList <Registration>();
+	}
+
+	public int getOfferingID() {
+		return offeringID;
+	}
+	public void setOfferingID(int offeringID) {
+		this.offeringID = offeringID;
+
+	
 	/**
 	 * Gets the section number.
 	 * @return the course name
@@ -115,7 +132,7 @@ public class CourseOffering {
 			}
 		}
 	}
-	
+
 
 	
 	
