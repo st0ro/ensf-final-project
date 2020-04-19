@@ -135,9 +135,11 @@ public class ClientReceiver implements Runnable {
 						int seats = Integer.parseInt(socketIn.readLine());
 						if(searchResult == null) {
 							Course newCourse = new Course(splitName[0], courseNumber);
-							newCourse.addOffering(new CourseOffering(1, seats));
+							CourseOffering newOffering = new CourseOffering(1, seats);
+							newCourse.addOffering(newOffering);
 							catalogue.getCourseList().add(newCourse);
 							database.addCourse(newCourse);
+							database.addCourseOffering(newOffering);
 						}
 						else {
 							CourseOffering newOffering = new CourseOffering(searchResult.getOfferingList().size() + 1, seats);

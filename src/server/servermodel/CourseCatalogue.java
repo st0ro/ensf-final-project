@@ -24,14 +24,22 @@ public class CourseCatalogue {
 	 * @param secNum the section number for the course offering
 	 * @param secCap the section capacity for the course offering
 	 */
-	public CourseOffering createCourseOffering (Course c, int secNum, int secCap) {
+	public void createCourseOffering (Course c, int secNum, int secCap) {
 		if (c!= null) {
 			CourseOffering theOffering = new CourseOffering (secNum, secCap);
 			c.addOffering(theOffering);
-			return theOffering;
 		}
-		return null;
 	}
+	
+	
+	public void createCourseOffering (int id, Course c, int secNum, int secCap) {
+		if (c!= null) {
+			CourseOffering theOffering = new CourseOffering (secNum, secCap);
+			theOffering.setOfferingID(id);
+			c.addOffering(theOffering);
+		}
+	}
+	
 	/**
 	 * Searches for the specified course in the CourseCatalogue object.
 	 * @param courseName the name of the course

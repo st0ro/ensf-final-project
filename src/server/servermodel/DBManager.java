@@ -16,15 +16,12 @@ public class DBManager {
 	private Statement stmt;
 	private ResultSet rs;
 
-	private int nextOfferingID;
-
 	public DBManager(CourseCatalogue courseCat) {
 		initializeConnection();
 		courseList = new ArrayList<Course>();
 		studentList = new ArrayList<Student>();
 		courses = courseCat;
 		courseCat.setCourseList(courseList);
-		nextOfferingID = 0;
 	}
 
 	public ArrayList<Course> getCourseList() {
@@ -92,12 +89,12 @@ public class DBManager {
 			}
 
 			stmt = conn.createStatement();
-			query = "SELECT * FROM ensf409.courseofferings";
+			query = "SELECT * FROM ensf409.courseofferings \n"
+					+ "JOIN ensf409.courses ON ensf409.courseofferings.CourseID = ensf409.courses.CourseID";
 			rs = stmt.executeQuery(query);
 			while (rs.next()) {
-				CourseOffering offering = courses.createCourseOffering(courseList.get(rs.getInt("CourseID") - 1), rs.getInt("SecNum"),
-						rs.getInt("SecCap"));
-				offering.setOfferingID(nextOfferingID++);
+				courses.createCourseOffering(rs.getInt("OfferingID"), courses.searchCat(rs.getString("CourseName"), rs.getInt("CourseNum")),
+						rs.getInt("SecNum"), rs.getInt("SecCap"));
 			}
 		} catch (SQLException e) {
 			System.out.println("Problem loading courses");
@@ -108,12 +105,13 @@ public class DBManager {
 	private void readRegistrationsFromDatabase() {
 		try {
 			stmt = conn.createStatement();
-			String query = "SELECT * FROM ensf409.registrations\r\n" + 
-					"JOIN ensf409.courseofferings ON ensf409.registrations.OfferingID = ensf409.courseofferings.OfferingID";
+			String query = "SELECT * FROM ensf409.registrations\r\n"
+					+ "JOIN ensf409.courseofferings ON ensf409.registrations.OfferingID = ensf409.courseofferings.OfferingID";
 			rs = stmt.executeQuery(query);
 			while (rs.next()) {
 				Registration reg = new Registration();
-				reg.completeRegistration(searchStudent(rs.getInt("StudentID")), courseList.get(rs.getInt("CourseID")-1).getCourseOfferingAt(rs.getInt("SecNum")-1));
+				reg.completeRegistration(searchStudent(rs.getInt("StudentID")),
+						courseList.get(rs.getInt("CourseID") - 1).getCourseOfferingAt(rs.getInt("SecNum") - 1));
 			}
 		} catch (SQLException e) {
 			System.out.println("Problem loading courses");
@@ -134,10 +132,11 @@ public class DBManager {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void removeRegistration(Registration r) {
 		try {
-			String query = "DELETE FROM ensf409.registrations WHERE StudentID=" + r.getTheStudent().getStudentId() + " AND OfferingID=" + r.getTheOffering().getOfferingID();
+			String query = "DELETE FROM ensf409.registrations WHERE StudentID=" + r.getTheStudent().getStudentId()
+					+ " AND OfferingID=" + r.getTheOffering().getOfferingID();
 			PreparedStatement stat = conn.prepareStatement(query);
 			stat.executeUpdate();
 			stat.close();
@@ -149,13 +148,17 @@ public class DBManager {
 
 	public void addCourse(Course c) {
 		try {
-			c.setCourseID(courseList.size() + 1);
 			String query = "INSERT INTO `ensf409`.`courses` (`CourseName`, `CourseNum`) VALUES (?,?)";
 			PreparedStatement stat = conn.prepareStatement(query);
 			stat.setString(1, c.getCourseName());
 			stat.setInt(2, c.getCourseNum());
 			stat.executeUpdate();
 			stat.close();
+			stmt = conn.createStatement();
+			query = "SELECT * FROM ensf409.courses WHERE CourseID = LAST_INSERT_ID()";
+			rs = stmt.executeQuery(query);
+			rs.next();
+			c.setCourseID(rs.getInt("CourseID"));
 		} catch (SQLException e) {
 			System.out.println("Problem adding course");
 			e.printStackTrace();
@@ -164,17 +167,20 @@ public class DBManager {
 
 	public void addCourseOffering(CourseOffering c) {
 		try {
-			String query = "INSERT INTO `ensf409`.`courseofferings` (OfferingID, `CourseID`, `SecNum`, `SecCap`) VALUES (?, ?, ?, ?)";
+			String query = "INSERT INTO `ensf409`.`courseofferings` (`CourseID`, `SecNum`, `SecCap`) VALUES (?, ?, ?)";
 			PreparedStatement stat = conn.prepareStatement(query);
-			stat.setInt(1, nextOfferingID);
-			stat.setInt(2, c.getTheCourse().getCourseID());
-			stat.setInt(3, c.getSecNum());
-			stat.setInt(4, c.getSecCap());
+			stat.setInt(1, c.getTheCourse().getCourseID());
+			stat.setInt(2, c.getSecNum());
+			stat.setInt(3, c.getSecCap());
 			stat.executeUpdate();
 			stat.close();
-			c.setOfferingID(nextOfferingID++);
+			stmt = conn.createStatement();
+			query = "SELECT * FROM ensf409.courseofferings WHERE OfferingID = LAST_INSERT_ID()";
+			rs = stmt.executeQuery(query);
+			rs.next();
+			c.setOfferingID(rs.getInt("OfferingID"));
 		} catch (SQLException e) {
-			System.out.println("Problem adding course");
+			System.out.println("Problem adding course offering");
 			e.printStackTrace();
 		}
 	}
