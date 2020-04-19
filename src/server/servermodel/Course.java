@@ -1,15 +1,34 @@
-// Written by T. Fang
 package server.servermodel;
 
 import java.util.ArrayList;
 
+/**
+ * The Course class for the course registration system.
+ * 
+ * @author Tony Fang
+ */
 public class Course {
-
+	/**
+	 * The name of the course
+	 */
 	private String courseName;
+	/**
+	 * The number of the course
+	 */
 	private int courseNum;
+	/**
+	 * The ArrayList containing prerequisite courses
+	 */
 	private ArrayList<Course> preReq;
+	/**
+	 * The ArrayList containing all offerings for the course
+	 */
 	private ArrayList<CourseOffering> offeringList;
-
+	/**
+	 * Constructs the Course object with specified values.
+	 * @param courseName the name of the course
+	 * @param courseNum the number of the course
+	 */
 	public Course(String courseName, int courseNum) {
 		this.setCourseName(courseName);
 		this.setCourseNum(courseNum);
@@ -17,7 +36,10 @@ public class Course {
 		preReq = new ArrayList<Course>();
 		offeringList = new ArrayList<CourseOffering>();
 	}
-
+	/**
+	 * Adds a course offering to the Course object.
+	 * @param offering the CourseOffering object that is added
+	 */
 	public void addOffering(CourseOffering offering) {
 		if (offering != null && offering.getTheCourse() == null) {
 			offering.setTheCourse(this);
@@ -30,22 +52,37 @@ public class Course {
 			offeringList.add(offering);
 		}
 	}
-
+	/**
+	 * Gets the course name.
+	 * @return the course name
+	 */
 	public String getCourseName() {
 		return courseName;
 	}
-
+	/**
+	 * Sets the course name.
+	 * @param courseName the course name
+	 */
 	public void setCourseName(String courseName) {
 		this.courseName = courseName;
 	}
-
+	/**
+	 * gets the course number.
+	 * @return the course number
+	 */
 	public int getCourseNum() {
 		return courseNum;
 	}
-
+	/**
+	 * sets the course number.
+	 * @param courseNum the course number
+	 */
 	public void setCourseNum(int courseNum) {
 		this.courseNum = courseNum;
 	}
+	/**
+	 * Converts the Course object to a String.
+	 */
 	@Override
 	public String toString () {
 		String st = "\n";
@@ -56,18 +93,28 @@ public class Course {
 		st += "\n-------\n";
 		return st;
 	}
-
+	/**
+	 * Gets the course offering at the specified index.
+	 * @param i the index in the ArrayList
+	 * @return the course offering
+	 */
 	public CourseOffering getCourseOfferingAt(int i) {
 		if (i < 0 || i >= offeringList.size() )
 			return null;
 		else
 			return offeringList.get(i);
 	}
-	
+	/**
+	 * Adds a prerequisite for the course.
+	 * @param course the prerequisite course to be added
+	 */
 	public void addPreReq(Course course) {
 		preReq.add(course);
 	}
-	
+	/**
+	 * Gets the course offering list
+	 * @return the course offering list
+	 */
 	public ArrayList<CourseOffering> getOfferingList() {
 		return offeringList;
 	}
