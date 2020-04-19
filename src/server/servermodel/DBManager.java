@@ -3,6 +3,7 @@ package server.servermodel;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -16,6 +17,10 @@ public class DBManager {
 	private Scanner courseInput;
 	private Scanner studentInput;
 
+	private Connection conn;
+	private Statement stmt;
+	private ResultSet rs;
+	
 	public DBManager(CourseCatalogue courseCat) {
 		courseList = new ArrayList<Course>();
 		studentList = new ArrayList<Student>();
@@ -29,6 +34,15 @@ public class DBManager {
 		}
 	}
 
+	public void initializeConnection() {
+		try {
+			Driver driver = new com.mysql.cj.jdbc.Driver();
+			DriverManager.registerDriver(driver);
+		} catch(SQLException e) {
+			System.out.println("An error occured while connecting to database");
+		}
+	}
+	
 	public void readFromDataBase() {
 		String input;
 		String[] arr;
