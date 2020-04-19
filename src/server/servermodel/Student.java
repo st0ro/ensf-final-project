@@ -66,7 +66,15 @@ public class Student {
 			}
 		}
 		return "fail";
-
+	}
+	
+	public Registration getRegistration(Course registeredFor) {
+		for (Registration r : studentRegList) {
+			if (r.getTheOffering().getTheCourse().equals(registeredFor)) {
+				return r;
+			}
+		}
+		return null;
 	}
 
 	public String getPassword() {

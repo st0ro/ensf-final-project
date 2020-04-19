@@ -10,6 +10,7 @@ import java.net.Socket;
 import server.servermodel.Course;
 import server.servermodel.CourseCatalogue;
 import server.servermodel.CourseOffering;
+import server.servermodel.DBManager;
 import server.servermodel.Registration;
 import server.servermodel.Student;
 
@@ -20,12 +21,14 @@ public class ClientReceiver implements Runnable {
 	private CourseCatalogue catalogue;
 	private Student theStudent;
 	private ServerController controller;
+	private DBManager database;
 
-	public ClientReceiver(Socket s, CourseCatalogue c, ServerController controller) {
+	public ClientReceiver(Socket s, CourseCatalogue c, ServerController controller, DBManager db) {
 		try {
 			socketIn = new BufferedReader(new InputStreamReader(s.getInputStream()));
 			socketOut = new PrintWriter(s.getOutputStream(), true);
 			catalogue = c;
+			database = db;
 			this.controller = controller;
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -104,6 +107,7 @@ public class ClientReceiver implements Runnable {
 						} else {
 							Registration reg = new Registration();
 							reg.completeRegistration(theStudent, offering);
+							database.addRegistration(reg);
 							socketOut.println("Registration successful");
 						}
 					}
@@ -111,6 +115,7 @@ public class ClientReceiver implements Runnable {
 
 				case "unenroll":
 					Course found3 = catalogue.searchCat(args[1], Integer.parseInt(args[2]));
+					database.removeRegistration(theStudent.getRegistration(found3));
 					socketOut.println(theStudent.removeRegistration(found3));
 					break;
 
@@ -132,11 +137,13 @@ public class ClientReceiver implements Runnable {
 							Course newCourse = new Course(splitName[0], courseNumber);
 							newCourse.addOffering(new CourseOffering(1, seats));
 							catalogue.getCourseList().add(newCourse);
+							database.addCourse(newCourse);
 						}
 						else {
-							searchResult.addOffering(new CourseOffering(searchResult.getOfferingList().size() + 1, seats));
+							CourseOffering newOffering = new CourseOffering(searchResult.getOfferingList().size() + 1, seats);
+							searchResult.addOffering(newOffering);
+							database.addCourseOffering(newOffering);
 						}
-						// TODO update DB (unless handled by catalogue)
 						socketOut.println("success");
 					}
 					else {

@@ -39,7 +39,7 @@ public class ServerController {
 			try {
 				Socket aSocket = serverSocket.accept();
 				System.out.println("Client connected!");
-				ClientReceiver receiver = new ClientReceiver(aSocket, database.getCourses(), this);
+				ClientReceiver receiver = new ClientReceiver(aSocket, database.getCourses(), this, database);
 				pool.execute(receiver);
 			} catch (IOException e) {
 				e.printStackTrace();

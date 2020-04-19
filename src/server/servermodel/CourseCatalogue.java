@@ -12,17 +12,25 @@ public class CourseCatalogue {
 	 * The ArrayList containing all courses
 	 */
 	private ArrayList <Course> courseList;
+	
+	
+	public void addCourse() {
+		
+	}
+	
 	/**
 	 * Creates a course offering for the specified course.
 	 * @param c the course that the course offering is created for
 	 * @param secNum the section number for the course offering
 	 * @param secCap the section capacity for the course offering
 	 */
-	public void createCourseOffering (Course c, int secNum, int secCap) {
+	public CourseOffering createCourseOffering (Course c, int secNum, int secCap) {
 		if (c!= null) {
 			CourseOffering theOffering = new CourseOffering (secNum, secCap);
 			c.addOffering(theOffering);
+			return theOffering;
 		}
+		return null;
 	}
 	/**
 	 * Searches for the specified course in the CourseCatalogue object.
