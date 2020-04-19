@@ -14,67 +14,143 @@ public class DBManager {
 	private ArrayList<Course> courseList;
 	private ArrayList<Student> studentList;
 	private CourseCatalogue courses;
-	private Scanner courseInput;
-	private Scanner studentInput;
+
 
 	private Connection conn;
 	private Statement stmt;
 	private ResultSet rs;
 	
+	private int nextOfferingID;
+	
 	public DBManager(CourseCatalogue courseCat) {
+		initializeConnection();
 		courseList = new ArrayList<Course>();
 		studentList = new ArrayList<Student>();
 		courses = courseCat;
 		courseCat.setCourseList(courseList);
-		try {
-			courseInput = new Scanner(new File("database.txt"));
-			studentInput = new Scanner(new File("students.txt"));
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
+		nextOfferingID = 1;
+	}
+	
+	public ArrayList<Course> getCourseList() {
+		return courseList;
 	}
 
+	public ArrayList<Student> getStudentList() {
+		return studentList;
+	}
+
+	public CourseCatalogue getCourses() {
+		return courses;
+	}
+
+	
 	public void initializeConnection() {
 		try {
 			Driver driver = new com.mysql.cj.jdbc.Driver();
 			DriverManager.registerDriver(driver);
+			conn = DriverManager.getConnection(IDBCredentials.DB_URL, IDBCredentials.USERNAME, IDBCredentials.PASSWORD);
 		} catch(SQLException e) {
 			System.out.println("An error occured while connecting to database");
+			e.printStackTrace();
+		}
+	}
+	
+	public void close() {
+		try {
+			rs.close();
+			conn.close();
+		} catch (SQLException e) {
+			System.out.println("An error occurred when trying to close the database connection");
+			e.printStackTrace();
 		}
 	}
 	
 	public void readFromDataBase() {
-		String input;
-		String[] arr;
-		while (courseInput.hasNextLine()) {
-			input = courseInput.nextLine();
-			arr = input.split(" ");
-			boolean found = false;
-			Course co = new Course(arr[0], Integer.parseInt(arr[1]));
-			for (Course c : courseList) {
-				if (c.getCourseName().equals(arr[0]) && c.getCourseNum() == Integer.parseInt(arr[1])) {
-					found = true;
-					co = c;
-					break;
-				}
-			}
-			if(!found) {
-				courseList.add(co);
-			}
-			courses.createCourseOffering(co, Integer.parseInt(arr[2]), Integer.parseInt(arr[3]));
-		}
-		courses.setCourseList(courseList);
-		while (studentInput.hasNextLine()) {
-			input = studentInput.nextLine();
-			arr = input.split(" ");
-			studentList.add(new Student(arr[0], arr[1], arr[2]));
-		}
-		courseInput.close();
-		studentInput.close();
+		readCoursesFromDatabase();
+		readStudentsFromDatabase();
 		return;
 	}
 
-	public Student searchStudent(String id) {
+	private void readStudentsFromDatabase() {
+		try {
+			stmt = conn.createStatement();
+			String query = "SELECT * FROM ensf409.students";
+			rs = stmt.executeQuery(query);
+			while(rs.next()) {
+				studentList.add(new Student(rs.getString("StudentName"), rs.getInt("StudentID"), rs.getString("StudentPassword")));
+			}
+		} catch (SQLException e) {
+			System.out.println("Problem loading students");
+			e.printStackTrace();
+		}
+	}
+	
+	private void readCoursesFromDatabase() {
+		try {
+			stmt = conn.createStatement();
+			String query = "SELECT * FROM ensf409.courses";
+			rs = stmt.executeQuery(query);
+			while(rs.next()) {
+				courseList.add(new Course(rs.getInt("CourseID"), rs.getString("CourseName"), rs.getInt("CourseNum")));
+			}
+			
+			stmt = conn.createStatement();
+			query = "SELECT * FROM ensf409.courseofferings";
+			rs = stmt.executeQuery(query);
+			while(rs.next()) {
+				courses.createCourseOffering(courseList.get(rs.getInt("CourseID")-1), rs.getInt("SecNum"), rs.getInt("SecCap"));
+				nextOfferingID++;
+			}
+		} catch(SQLException e) {
+			System.out.println("Problem loading courses");
+			e.printStackTrace();
+		}
+	}
+	
+	public void addRegistration(Registration r) {
+		try {
+			String query = "INSERT INTO `ensf409`.`registrations` (`StudentID`, `OfferingID`) VALUES (?, ?)";
+			PreparedStatement stat = conn.prepareStatement(query);
+			stat.setInt(1, r.getTheStudent().getStudentId());
+			stat.setInt(2, r.getTheOffering().getOfferingID());
+			stat.executeUpdate();
+			stat.close();
+		} catch (SQLException e) {
+			System.out.println("Problem adding registration");
+			e.printStackTrace();
+		}
+	}
+	
+	public void addCourse(Course c) {
+		try {
+			String query = "INSERT INTO `ensf409`.`courses` (`CourseName`, `CourseNum`) VALUES (?,?)";
+			PreparedStatement stat = conn.prepareStatement(query);
+			stat.setString(1, c.getCourseName());
+			stat.setInt(2, c.getCourseNum());
+			stat.executeUpdate();
+			stat.close();
+		} catch (SQLException e) {
+			System.out.println("Problem adding course");
+			e.printStackTrace();
+		}
+	}
+	
+	public void addCourseOffering(CourseOffering c) {
+		try {
+			String query = "INSERT INTO `ensf409`.`courseofferings` (`CourseID`, `SecNum`, `SecCap`) VALUES (?, ?, ?)";
+			PreparedStatement stat = conn.prepareStatement(query);
+			stat.setInt(1, c.getTheCourse().getCourseID());
+			stat.setInt(2, c.getSecNum());
+			stat.setInt(2, c.getSecCap());
+			stat.executeUpdate();
+			stat.close();
+		} catch (SQLException e) {
+			System.out.println("Problem adding course");
+			e.printStackTrace();
+		}
+	}
+
+	public Student searchStudent(int id) {
 		for (Student s : studentList) {
 			if (s.getStudentId() == id)
 				return s;
@@ -89,17 +165,5 @@ public class DBManager {
 		}
 		return null;
 	}
-
-	public ArrayList<Course> getCourseList() {
-		return courseList;
-	}
-
-	public ArrayList<Student> getStudentList() {
-		return studentList;
-	}
-
-	public CourseCatalogue getCourses() {
-		return courses;
-	}
-
+	
 }

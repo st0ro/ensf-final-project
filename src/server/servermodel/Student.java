@@ -6,11 +6,11 @@ import java.util.ArrayList;
 public class Student {
 
 	private String studentName;
-	private String studentId;
+	private int studentId;
 	private String password;
 	private ArrayList<Registration> studentRegList;
 
-	public Student(String studentName, String studentId, String password) {
+	public Student(String studentName, int studentId, String password) {
 		this.setStudentName(studentName);
 		this.setStudentId(studentId);
 		this.setPassword(password);
@@ -25,11 +25,11 @@ public class Student {
 		this.studentName = studentName;
 	}
 
-	public String getStudentId() {
+	public int getStudentId() {
 		return studentId;
 	}
 
-	public void setStudentId(String studentId) {
+	public void setStudentId(int studentId) {
 		this.studentId = studentId;
 	}
 

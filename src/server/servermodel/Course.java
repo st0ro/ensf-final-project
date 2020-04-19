@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 public class Course {
 
+	private int courseID;
 	private String courseName;
 	private int courseNum;
 	private ArrayList<Course> preReq;
@@ -18,6 +19,15 @@ public class Course {
 		offeringList = new ArrayList<CourseOffering>();
 	}
 
+	public Course(int courseID, String courseName, int courseNum) {
+		this.setCourseID(courseID);
+		this.setCourseName(courseName);
+		this.setCourseNum(courseNum);
+		// Both of the following are only association
+		preReq = new ArrayList<Course>();
+		offeringList = new ArrayList<CourseOffering>();
+	}
+	
 	public void addOffering(CourseOffering offering) {
 		if (offering != null && offering.getTheCourse() == null) {
 			offering.setTheCourse(this);
@@ -70,6 +80,14 @@ public class Course {
 	
 	public ArrayList<CourseOffering> getOfferingList() {
 		return offeringList;
+	}
+
+	public int getCourseID() {
+		return courseID;
+	}
+
+	public void setCourseID(int courseID) {
+		this.courseID = courseID;
 	}
 
 }
