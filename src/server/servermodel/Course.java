@@ -8,7 +8,9 @@ import java.util.ArrayList;
  * @author Tony Fang
  */
 public class Course {
-
+	/**
+	 * The ID of the course
+	 */
 	private int courseID;
 	/**
 	 * The name of the course
@@ -34,20 +36,22 @@ public class Course {
 	public Course(String courseName, int courseNum) {
 		this.setCourseName(courseName);
 		this.setCourseNum(courseNum);
-		// Both of the following are only association
 		preReq = new ArrayList<Course>();
 		offeringList = new ArrayList<CourseOffering>();
 	}
-
+	/**
+	 * Constructs the Course object with specified values.
+	 * @param courseID the ID of the course
+	 * @param courseName the name of the course
+	 * @param courseNum the number of the course
+	 */
 	public Course(int courseID, String courseName, int courseNum) {
 		this.setCourseID(courseID);
 		this.setCourseName(courseName);
 		this.setCourseNum(courseNum);
-		// Both of the following are only association
 		preReq = new ArrayList<Course>();
 		offeringList = new ArrayList<CourseOffering>();
 	}
-	
 	/**
 	 * Adds a course offering to the Course object.
 	 * @param offering the CourseOffering object that is added
@@ -130,11 +134,17 @@ public class Course {
 	public ArrayList<CourseOffering> getOfferingList() {
 		return offeringList;
 	}
-
+	/**
+	 * Gets the course ID
+	 * @return the course ID
+	 */
 	public int getCourseID() {
 		return courseID;
 	}
-
+	/**
+	 * Sets the course ID
+	 * @param courseID the course ID
+	 */
 	public void setCourseID(int courseID) {
 		this.courseID = courseID;
 	}

@@ -8,7 +8,9 @@ import java.util.ArrayList;
  * @author Tony Fang
  */
 public class CourseOffering {
-	
+	/**
+	 * The ID of the course offering
+	 */
 	private int offeringID;
 	/**
 	 * The section number of the course offering
@@ -36,20 +38,32 @@ public class CourseOffering {
 		this.setSecCap(secCap);
 		offeringRegList = new ArrayList <Registration>();
 	}
-	
+	/**
+	 * Constructs the CourseOffering object with specified values.
+	 * @param offeringID the ID of the course offering
+	 * @param secNum the section number of the course offering
+	 * @param secCap the section capacity of the course offering
+	 */
 	public CourseOffering (int offeringID, int secNum, int secCap) {
 		this.setOfferingID(offeringID);
 		this.setSecNum(secNum);
 		this.setSecCap(secCap);
 		offeringRegList = new ArrayList <Registration>();
 	}
-
+	/**
+	 * Gets the course offering ID
+	 * @return the course offering ID
+	 */
 	public int getOfferingID() {
 		return offeringID;
 	}
+	/**
+	 * Sets the course offering ID
+	 * @param offeringID the course offering ID
+	 */
 	public void setOfferingID(int offeringID) {
 		this.offeringID = offeringID;
-
+	}
 	
 	/**
 	 * Gets the section number.
