@@ -28,6 +28,7 @@ public class Course {
 	 * The ArrayList containing all offerings for the course
 	 */
 	private ArrayList<CourseOffering> offeringList;
+	
 	/**
 	 * Constructs the Course object with specified values.
 	 * @param courseName the name of the course
@@ -39,6 +40,7 @@ public class Course {
 		preReq = new ArrayList<Course>();
 		offeringList = new ArrayList<CourseOffering>();
 	}
+	
 	/**
 	 * Constructs the Course object with specified values.
 	 * @param courseID the ID of the course
@@ -52,6 +54,7 @@ public class Course {
 		preReq = new ArrayList<Course>();
 		offeringList = new ArrayList<CourseOffering>();
 	}
+	
 	/**
 	 * Adds a course offering to the Course object.
 	 * @param offering the CourseOffering object that is added
@@ -68,6 +71,7 @@ public class Course {
 			offeringList.add(offering);
 		}
 	}
+	
 	/**
 	 * Gets the course name.
 	 * @return the course name
@@ -75,6 +79,7 @@ public class Course {
 	public String getCourseName() {
 		return courseName;
 	}
+	
 	/**
 	 * Sets the course name.
 	 * @param courseName the course name
@@ -82,6 +87,7 @@ public class Course {
 	public void setCourseName(String courseName) {
 		this.courseName = courseName;
 	}
+	
 	/**
 	 * gets the course number.
 	 * @return the course number
@@ -89,6 +95,7 @@ public class Course {
 	public int getCourseNum() {
 		return courseNum;
 	}
+	
 	/**
 	 * sets the course number.
 	 * @param courseNum the course number
@@ -96,6 +103,7 @@ public class Course {
 	public void setCourseNum(int courseNum) {
 		this.courseNum = courseNum;
 	}
+	
 	/**
 	 * Converts the Course object to a String.
 	 */
@@ -109,6 +117,7 @@ public class Course {
 		st += "\n-------\n";
 		return st;
 	}
+	
 	/**
 	 * Gets the course offering at the specified index.
 	 * @param i the index in the ArrayList
@@ -120,6 +129,7 @@ public class Course {
 		else
 			return offeringList.get(i);
 	}
+	
 	/**
 	 * Adds a prerequisite for the course.
 	 * @param course the prerequisite course to be added
@@ -127,6 +137,7 @@ public class Course {
 	public void addPreReq(Course course) {
 		preReq.add(course);
 	}
+	
 	/**
 	 * Gets the course offering list
 	 * @return the course offering list
@@ -134,6 +145,7 @@ public class Course {
 	public ArrayList<CourseOffering> getOfferingList() {
 		return offeringList;
 	}
+	
 	/**
 	 * Gets the course ID
 	 * @return the course ID
@@ -141,6 +153,7 @@ public class Course {
 	public int getCourseID() {
 		return courseID;
 	}
+	
 	/**
 	 * Sets the course ID
 	 * @param courseID the course ID
