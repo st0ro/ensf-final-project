@@ -13,11 +13,6 @@ public class CourseCatalogue {
 	 */
 	private ArrayList <Course> courseList;
 	
-	
-	public void addCourse() {
-		
-	}
-	
 	/**
 	 * Creates a course offering for the specified course.
 	 * @param c the course that the course offering is created for
@@ -31,7 +26,13 @@ public class CourseCatalogue {
 		}
 	}
 	
-	
+	/**
+	 * Creates a course offering for the specified course.
+	 * @param id the ID for the course offering
+	 * @param c the course that the course offering is created for
+	 * @param secNum the section number for the course offering
+	 * @param secCap the section capacity for the course offering
+	 */
 	public void createCourseOffering (int id, Course c, int secNum, int secCap) {
 		if (c!= null) {
 			CourseOffering theOffering = new CourseOffering (secNum, secCap);
@@ -55,6 +56,7 @@ public class CourseCatalogue {
 		}
 		return null;
 	}
+	
 	/**
 	 * Gets the list of courses.
 	 * @return the list of courses
@@ -62,6 +64,7 @@ public class CourseCatalogue {
 	public ArrayList <Course> getCourseList() {
 		return courseList;
 	}
+	
 	/**
 	 * Sets the list of courses.
 	 * @param courseList the list of courses
@@ -69,6 +72,7 @@ public class CourseCatalogue {
 	public void setCourseList(ArrayList <Course> courseList) {
 		this.courseList = courseList;
 	}
+	
 	/**
 	 * Converts the CourseCatalogue object to a String.
 	 */

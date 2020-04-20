@@ -41,6 +41,7 @@ public class CourseOffering {
 		this.setSecCap(secCap);
 		offeringRegList = new ArrayList<Registration>();
 	}
+	
 	/**
 	 * Constructs the CourseOffering object with specified values.
 	 * @param offeringID the ID of the course offering
@@ -53,6 +54,7 @@ public class CourseOffering {
 		this.setSecCap(secCap);
 		offeringRegList = new ArrayList<Registration>();
 	}
+	
 	/**
 	 * Gets the course offering ID
 	 * @return the course offering ID
@@ -60,6 +62,7 @@ public class CourseOffering {
 	public int getOfferingID() {
 		return offeringID;
 	}
+	
 	/**
 	 * Sets the course offering ID
 	 * @param offeringID the course offering ID

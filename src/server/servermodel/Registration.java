@@ -18,6 +18,7 @@ public class Registration {
 	 * The student's course letter grade
 	 */
 	private char grade;
+	
 	/**
 	 * Registers a student to a course offering.
 	 * @param st the student
@@ -29,6 +30,7 @@ public class Registration {
 		theStudent.addRegistration(this);
 		theOffering.addRegistration(this);
 	}
+	
 	/**
 	 * Gets the registered student.
 	 * @return the registered student
@@ -36,6 +38,7 @@ public class Registration {
 	public Student getTheStudent() {
 		return theStudent;
 	}
+	
 	/**
 	 * Sets the registered student.
 	 * @param theStudent the registered student
@@ -43,6 +46,7 @@ public class Registration {
 	public void setTheStudent(Student theStudent) {
 		this.theStudent = theStudent;
 	}
+	
 	/**
 	 * Gets the course offering.
 	 * @return the course offering
@@ -50,6 +54,7 @@ public class Registration {
 	public CourseOffering getTheOffering() {
 		return theOffering;
 	}
+	
 	/**
 	 * Sets the course offering.
 	 * @param theOffering the course offering
@@ -57,6 +62,7 @@ public class Registration {
 	public void setTheOffering(CourseOffering theOffering) {
 		this.theOffering = theOffering;
 	}
+	
 	/**
 	 * Gets the student's course letter grade.
 	 * @return the student's course letter grade
@@ -64,6 +70,7 @@ public class Registration {
 	public char getGrade() {
 		return grade;
 	}
+	
 	/**
 	 * Sets the student's course letter grade.
 	 * @param grade the student's course letter grade
@@ -71,6 +78,7 @@ public class Registration {
 	public void setGrade(char grade) {
 		this.grade = grade;
 	}
+	
 	/**
 	 * Converts the Registration object to a String.
 	 */

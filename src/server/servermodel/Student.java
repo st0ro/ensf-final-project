@@ -24,6 +24,7 @@ public class Student {
 	 * The ArrayList of registrations for this student
 	 */
 	private ArrayList<Registration> studentRegList;
+	
 	/**
 	 * Constructs the Student object with specified values.
 	 * @param studentName the name of the student
@@ -36,6 +37,7 @@ public class Student {
 		this.setPassword(password);
 		studentRegList = new ArrayList<Registration>();
 	}
+	
 	/**
 	 * Gets the student's name.
 	 * @return the student's name
@@ -43,6 +45,7 @@ public class Student {
 	public String getStudentName() {
 		return studentName;
 	}
+	
 	/**
 	 * Sets the student's name.
 	 * @param studentName the student's name
@@ -50,6 +53,7 @@ public class Student {
 	public void setStudentName(String studentName) {
 		this.studentName = studentName;
 	}
+	
 	/**
 	 * Gets the student's ID.
 	 * @return the student's ID
@@ -57,6 +61,7 @@ public class Student {
 	public int getStudentId() {
 		return studentId;
 	}
+	
 	/**
 	 * Sets the student's ID.
 	 * @param studentId the student's ID
@@ -64,6 +69,7 @@ public class Student {
 	public void setStudentId(int studentId) {
 		this.studentId = studentId;
 	}
+	
 	/**
 	 * Checks if the student is registered in the specified course course.
 	 * @param c the target course
@@ -76,6 +82,7 @@ public class Student {
 		}
 		return false;
 	}
+	
 	/**
 	 * Converts the Student object to a String.
 	 */
@@ -89,6 +96,7 @@ public class Student {
 		}
 		return st;
 	}
+	
 	/**
 	 * Adds a registration to the student.
 	 * @param registration the registration that is added
@@ -97,6 +105,7 @@ public class Student {
 		if (studentRegList.size() < 6)
 			studentRegList.add(registration);
 	}
+	
 	/**
 	 * Removes a registration from the student.
 	 * @param toRemove the course for the removed registration
@@ -113,6 +122,11 @@ public class Student {
 		return "fail";
 	}
 	
+	/**
+	 * Gets the specified registration from the student.
+	 * @param registeredFor the target course
+	 * @return the registration
+	 */
 	public Registration getRegistration(Course registeredFor) {
 		for (Registration r : studentRegList) {
 			if (r.getTheOffering().getTheCourse().equals(registeredFor)) {
@@ -121,22 +135,25 @@ public class Student {
 		}
 		return null;
 	}
+	
 	/**
-	 * Gets the student's password
+	 * Gets the student's password.
 	 * @return the student's password
 	 */
 	public String getPassword() {
 		return password;
 	}
+	
 	/**
-	 * Sets the student's password
+	 * Sets the student's password.
 	 * @param password the student's password
 	 */
 	public void setPassword(String password) {
 		this.password = password;
 	}
+	
 	/**
-	 * Gets the list of registrations
+	 * Gets the list of registrations.
 	 * @return the list of registrations
 	 */
 	public ArrayList<Registration> getRegList() {
