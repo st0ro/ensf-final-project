@@ -1,4 +1,4 @@
-// Written by J. Zhou
+
 package server.servercontroller;
 
 import java.io.BufferedReader;
@@ -14,6 +14,13 @@ import server.servermodel.DBManager;
 import server.servermodel.Registration;
 import server.servermodel.Student;
 
+/**
+ * A class for receiving and sending data to and from a client. 
+ * Supports multi-threading.
+ * 
+ * @author James Zhou
+ *
+ */
 public class ClientReceiver implements Runnable {
 
 	private BufferedReader socketIn;
@@ -23,6 +30,13 @@ public class ClientReceiver implements Runnable {
 	private ServerController controller;
 	private DBManager database;
 
+	/**
+	 * Creates a ClientReceiver object from the provided arguments.
+	 * @param s Socket the client-server communication is on
+	 * @param c The catalogue of courses
+	 * @param controller The main server running 
+	 * @param db A DBManager for communication to the database
+	 */
 	public ClientReceiver(Socket s, CourseCatalogue c, ServerController controller, DBManager db) {
 		try {
 			socketIn = new BufferedReader(new InputStreamReader(s.getInputStream()));
@@ -35,6 +49,9 @@ public class ClientReceiver implements Runnable {
 		}
 	}
 
+	/**
+	 * Runs the program based on input from the client.
+	 */
 	@Override
 	public void run() {
 		boolean running = true;
@@ -42,7 +59,7 @@ public class ClientReceiver implements Runnable {
 		try {
 			while (true) { // login loop
 				args = socketIn.readLine().split(" ");
-				if(args[0].equals("admin") && args[1].equals("admin")) {
+				if (args[0].equals("admin") && args[1].equals("admin")) {
 					socketOut.println(2);
 					break;
 				}
@@ -67,7 +84,8 @@ public class ClientReceiver implements Runnable {
 							socketOut.println(c.getOfferingList().size());
 							for (CourseOffering co : c.getOfferingList()) {
 								socketOut.println(co.getSecNum());
-								socketOut.println(co.getOfferingRegList().size() + "/" + co.getSecCap() + " students enrolled");
+								socketOut.println(
+										co.getOfferingRegList().size() + "/" + co.getSecCap() + " students enrolled");
 							}
 						}
 					} else if (args[1].equals("enrolled")) {
@@ -77,8 +95,8 @@ public class ClientReceiver implements Runnable {
 									+ r.getTheOffering().getTheCourse().getCourseNum());
 							socketOut.println("1");
 							socketOut.println(r.getTheOffering().getSecNum());
-							socketOut.println(r.getTheOffering().getOfferingRegList().size() + "/" + r.getTheOffering().getSecCap()
-									+ " students enrolled");
+							socketOut.println(r.getTheOffering().getOfferingRegList().size() + "/"
+									+ r.getTheOffering().getSecCap() + " students enrolled");
 						}
 					}
 					break;
@@ -127,28 +145,28 @@ public class ClientReceiver implements Runnable {
 					try {
 						courseNumber = Integer.parseInt(splitName[1]);
 						validNumber = true;
-					} catch(NumberFormatException e) {
+					} catch (NumberFormatException e) {
 						validNumber = false;
 					}
-					if(splitName.length == 2 && splitName[0].length() == 4 && splitName[1].length() == 3 && validNumber) {
+					if (splitName.length == 2 && splitName[0].length() == 4 && splitName[1].length() == 3
+							&& validNumber) {
 						Course searchResult = catalogue.searchCat(splitName[0], courseNumber);
 						int seats = Integer.parseInt(socketIn.readLine());
-						if(searchResult == null) {
+						if (searchResult == null) {
 							Course newCourse = new Course(splitName[0], courseNumber);
 							CourseOffering newOffering = new CourseOffering(1, seats);
 							newCourse.addOffering(newOffering);
 							catalogue.getCourseList().add(newCourse);
 							database.addCourse(newCourse);
 							database.addCourseOffering(newOffering);
-						}
-						else {
-							CourseOffering newOffering = new CourseOffering(searchResult.getOfferingList().size() + 1, seats);
+						} else {
+							CourseOffering newOffering = new CourseOffering(searchResult.getOfferingList().size() + 1,
+									seats);
 							searchResult.addOffering(newOffering);
 							database.addCourseOffering(newOffering);
 						}
 						socketOut.println("success");
-					}
-					else {
+					} else {
 						socketOut.println("fail");
 						socketOut.println("Invalid course name!");
 					}
@@ -165,10 +183,10 @@ public class ClientReceiver implements Runnable {
 				}
 			}
 		} catch (Exception e) {
-			// AFAIK will only throw IOException on unrecoverable errors, terminate if
-			// somehow occurs (should be properly closed by client)
-			// Could happen if server/client loses internet connection?
+			// The server should only throw an exception on unrecoverable errors.
+			// If this happens, terminate the program
 			System.out.println("Error communicating with client!. Terminating thread...");
+			return;
 		}
 	}
 

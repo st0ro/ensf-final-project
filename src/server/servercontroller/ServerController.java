@@ -1,4 +1,3 @@
-// Written by J. Zhou
 package server.servercontroller;
 
 import java.io.IOException;
@@ -11,6 +10,11 @@ import server.servermodel.CourseCatalogue;
 import server.servermodel.DBManager;
 import server.servermodel.Student;
 
+/**
+ * A class for the core server functions
+ * @author James Zhou
+ *
+ */
 public class ServerController {
 
 	private ServerSocket serverSocket;
@@ -18,6 +22,11 @@ public class ServerController {
 	private DBManager database;
 	private CourseCatalogue courses;
 
+	/**
+	 * Creates a ServerController object on the specified port
+	 * 
+	 * @param portNumber Port to create server on
+	 */
 	public ServerController(int portNumber) {
 		try {
 			serverSocket = new ServerSocket(portNumber);
@@ -30,10 +39,23 @@ public class ServerController {
 		}
 	}
 
+	/**
+	 * Attempts to log in with the given parameters
+	 * 
+	 * @param username Account username
+	 * @param password Account password
+	 * @return Student object corresponding to username if log in is successful,
+	 *         null otherwise
+	 * 
+	 */
 	public Student attemptLogin(String username, String password) {
 		return database.attemptLogin(username, password);
 	}
 
+	/**
+	 * Establishes communication with the client.
+	 * Will continue accepting connections while the server is running.
+	 */
 	public void communicate() {
 		while (true) {
 			try {
