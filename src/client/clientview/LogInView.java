@@ -1,4 +1,3 @@
-// Written by A. Price
 package client.clientview;
 
 import java.awt.Container;
@@ -16,6 +15,11 @@ import javax.swing.JTextField;
 
 import client.clientcontroller.ClientController;
 
+/**
+ * LogInView class for receiving the username and password to log in to the server with.
+ * @author Alexander Price
+ * @since April 13, 2020
+ */
 public class LogInView extends JFrame {
 
 	private static final long serialVersionUID = 666316270725557772L;
@@ -23,6 +27,9 @@ public class LogInView extends JFrame {
 	private JPasswordField passwordField;
 	private JButton logInBtn;
 
+	/**
+	 * Creates a new LogInView window, without listeners attached to the buttons.
+	 */
 	public LogInView() {
 		Container pane = getContentPane();
 		pane.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 10));
@@ -54,6 +61,10 @@ public class LogInView extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 	
+	/**
+	 * Sets the button listeners to call the given ClientController log in functionality.
+	 * @param controller ClientController to connect to
+	 */
 	public void setListeners(ClientController controller) {
 		logInBtn.addActionListener(new ActionListener() {
 			@Override

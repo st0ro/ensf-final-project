@@ -1,4 +1,3 @@
-// Written by A. Price
 package client.clientview;
 
 import java.awt.BorderLayout;
@@ -20,6 +19,11 @@ import javax.swing.table.DefaultTableModel;
 
 import client.clientcontroller.ClientController;
 
+/**
+ * ClientView class containing all functionality for the Client GUI as a JFrame.
+ * @author Alexander Price
+ * @since April 13, 2020
+ */
 public class ClientView extends JFrame{
 	
 	private static final long serialVersionUID = 998423311465136417L;
@@ -31,6 +35,9 @@ public class ClientView extends JFrame{
 	private JButton allSearchBtn, allEnrollBtn, allRefreshBtn, enrolledRemoveBtn, enrolledRefreshBtn;
 	private JButton adminAddCourseBtn, adminAddOfferingBtn;
 	
+	/**
+	 * Creates a new ClientView, opening a window with components that do not have listeners.
+	 */
 	public ClientView() {
 		super("Course Registration System");
 		
@@ -87,6 +94,10 @@ public class ClientView extends JFrame{
 		setVisible(true);
 	}
 	
+	/**
+	 * Sets button listeners for the GUI components, linking to the provided ClientController.
+	 * @param controller ClientController to call functions within on button presses
+	 */
 	public void setListeners(ClientController controller) {
 		allSearchBtn.addActionListener(new ActionListener() {
 			@Override
@@ -174,23 +185,30 @@ public class ClientView extends JFrame{
 	      });
 	}
 	
+	/**
+	 * Fills the specified table in the GUI based on the given 2D String matrix. Parameter set is 0 for the course catalogue tab,
+	 * or 1 for the currently enrolled courses tab.
+	 * @param list data to fill into the table
+	 * @param set table to fill into
+	 */
 	public void fillTable(String[][] list, int set) {
+		String[] headers = {"Course", "Section", "Capacity"};
 		switch(set) {
 		case 0:
-			allTable.setModel(makeTable(list));
+			allTable.setModel(new DefaultTableModel(list, headers));
 			break;
 		case 1:
-			enrolledTable.setModel(makeTable(list));
+			enrolledTable.setModel(new DefaultTableModel(list, headers));
 			break;
 		}
 		tabbedPane.repaint();
 	}
 	
-	private DefaultTableModel makeTable(String[][] list) {
-		String[] headers = {"Course", "Section", "Capacity"};
-		return new DefaultTableModel(list, headers);
-	}
-	
+	/**
+	 * Sets this ClientView instance to the admin view, removing the currently enrolled tab and changing the buttons
+	 * to match the admin operations.
+	 * @param controller ClientController in which to call the admin operations in
+	 */
 	public void setAdmin(ClientController controller) {
 		tabbedPane.remove(enrolledPane);
 		allPane.remove(allFootPane);
