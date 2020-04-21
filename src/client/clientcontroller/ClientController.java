@@ -41,7 +41,7 @@ public class ClientController {
 	 */
 	public void connect() {
 		try {
-			socket = new Socket("70.77.251.191", 25565);
+			socket = new Socket("localhost", 25565);
 			socketIn = new BufferedReader(new InputStreamReader(
 					socket.getInputStream()));
 			socketOut = new PrintWriter((socket.getOutputStream()), true);
